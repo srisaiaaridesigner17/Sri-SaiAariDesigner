@@ -8,6 +8,12 @@ const { CloudinaryStorage } = require('multer-storage-cloudinary');
 const multer = require('multer');
 const nodemailer = require('nodemailer');
 const crypto = require('crypto');
+const dns = require('dns');
+
+// Force IPv4 preference for network connections (Fixes ENETUNREACH on many cloud providers)
+if (dns.setDefaultResultOrder) {
+    dns.setDefaultResultOrder('ipv4first');
+}
 
 // Load environment variables
 dotenv.config();
@@ -199,10 +205,16 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         await user.save();
 
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.gmail.com',
+            port: 465,
+            secure: true, // Use SSL
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
+            },
+            tls: {
+                // Do not fail on invalid certs
+                rejectUnauthorized: false
             }
         });
 
