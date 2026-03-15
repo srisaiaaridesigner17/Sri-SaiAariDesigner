@@ -852,7 +852,7 @@ async function loadProductDetail() {
                     `}
                     <p class="product-detail-desc" style="font-size: 1.1rem; line-height: 1.6; margin-top: 15px;">${product.description}</p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px;">
-                        ${isBeautyParlor ? `
+                        ${isBeautyParlour ? `
                             <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'd like to book a service:
 *Service:* ${product.name}
 *Price:* ₹${product.price}
