@@ -92,7 +92,16 @@ app.post('/api/auth/signup', async (req, res) => {
 
         const newUser = new User({ name, email, password, phone, role: role || 'customer' });
         await newUser.save();
-        res.status(201).json({ message: 'User created successfully', user: { name, email, phone, role: newUser.role } });
+        res.status(201).json({ 
+            message: 'User created successfully', 
+            user: { 
+                id: newUser._id,
+                name: newUser.name, 
+                email: newUser.email, 
+                phone: newUser.phone, 
+                role: newUser.role 
+            } 
+        });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }

@@ -424,9 +424,8 @@
                 // 2. Register in your MongoDB Database
                 const res = await window.api.signup(userData);
 
-                if (res.message.includes('successfully')) {
-                    showMessage('signup-msg', 'Account created successfully! Redirecting to login...', 'success');
-                    setTimeout(() => toggleSection('login'), 2000);
+                if (res.user) {
+                    processLogin(res.user, 'signup-msg');
                 } else {
                     showMessage('signup-msg', res.message || 'Signup failed', 'error');
                 }
