@@ -853,12 +853,13 @@ async function loadProductDetail() {
                     <p class="product-detail-desc" style="font-size: 1.1rem; line-height: 1.6; margin-top: 15px;">${product.description}</p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px;">
                         ${isBeautyParlour ? `
-                            <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'd like to book a service:
+                            <a href="https://wa.me/919688561269?text=${encodeURIComponent(`${product.image}
+                            
+Hello, I'd like to book a service:
 *Service:* ${product.name}
 *Price:* ₹${product.price}
 *Duration:* ${product.duration}
-*Link:* ${window.location.href}
-*Image:* ${product.image}`)}" target="_blank" class="btn" style="flex: 1; min-width: 200px; background-color: #25d366; color: white; padding: 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; text-decoration: none;">
+*Link:* ${window.location.href}`)}" target="_blank" class="btn" style="flex: 1; min-width: 200px; background-color: #25d366; color: white; padding: 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; text-decoration: none;">
                                 <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i> Book via WhatsApp
                             </a>
                         ` : `
@@ -868,11 +869,12 @@ async function loadProductDetail() {
                             <button class="btn" style="flex: 1; padding: 15px; font-size: 1.1rem; background-color: #ff9f00;" onclick='buyNow(${JSON.stringify(product).replace(/'/g, "&#39;")})' ${product.stock === 0 ? 'disabled' : ''}>
                                 Buy Now
                             </button>
-                            <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'm interested in:
+                            <a href="https://wa.me/919688561269?text=${encodeURIComponent(`${product.image}
+
+Hello, I'm interested in:
 *Product:* ${product.name}
 *Price:* ₹${product.price}
-*Link:* ${window.location.href}
-*Image:* ${product.image}`)}" target="_blank" class="btn" style="background-color: #25d366; color: white; padding: 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; border: none; width: auto; flex: 0 0 70px;" title="Send link to WhatsApp">
+*Link:* ${window.location.href}`)}" target="_blank" class="btn" style="background-color: #25d366; color: white; padding: 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; border: none; width: auto; flex: 0 0 70px;" title="Send link to WhatsApp">
                                 <i class="fab fa-whatsapp"></i>
                             </a>
                         `}

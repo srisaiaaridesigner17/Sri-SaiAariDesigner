@@ -93,7 +93,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
             // Build the WhatsApp message
-            let message = `*New Order Details*\n`;
+            // Start with image link to trigger a prominent preview
+            let message = "";
+            if (checkoutItems.length > 0 && checkoutItems[0].image) {
+                message += `${checkoutItems[0].image}\n\n`;
+            }
+
+            message += `*New Order Details*\n`;
             message += `*Customer Name:* ${finalName}\n`;
             message += `*Phone:* ${finalPhone}\n`;
             message += `*Address:* ${finalAddress}\n\n`;
@@ -121,11 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             message += `\n*Total Amount:* ₹${totalAmount}\n`;
-            
-            // Add image link only at the end to trigger a clean preview
-            if (checkoutItems.length > 0 && checkoutItems[0].image) {
-                message += `\n*View Product:* ${checkoutItems[0].image}`;
-            }
 
             // Save order to Database for Persistence and Admin Panel
             const user = JSON.parse(localStorage.getItem('user'));
