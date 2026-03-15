@@ -588,8 +588,31 @@ function generateInteractiveStars(rating, productId) {
     return starsHtml;
 }
 
-window.shareProduct = function (name, text) {
+window.shareProduct = async function (name, text, imageUrl) {
     const url = window.location.href;
+    
+    // Feature detection for Web Share API with files
+    const canShareFiles = navigator.canShare && navigator.canShare({ files: [new File([], "test.jpg", { type: "image/jpeg" })] });
+
+    if (canShareFiles && imageUrl) {
+        try {
+            const response = await fetch(imageUrl);
+            const blob = await response.blob();
+            const file = new File([blob], "product.jpg", { type: blob.type });
+            
+            await navigator.share({
+                title: name,
+                text: text,
+                url: url,
+                files: [file]
+            });
+            return; // Successfully shared
+        } catch (err) {
+            console.warn("Sharing file failed, falling back to text", err);
+        }
+    }
+
+    // Fallback Modal for Desktop or browsers without file sharing
     const bodyHtml = `
         <div class="share-options">
             <div class="share-opt-btn whatsapp" onclick='window.open("https://wa.me/?text=" + encodeURIComponent("${text} " + "${url}"), "_blank"); closeModal();'>
@@ -599,10 +622,6 @@ window.shareProduct = function (name, text) {
             <div class="share-opt-btn copy" onclick='navigator.clipboard.writeText("${url}"); showToast("Link copied! 🔗", "info"); closeModal();'>
                 <i class="fas fa-link"></i>
                 <span>Copy Link</span>
-            </div>
-            <div class="share-opt-btn nearby" onclick='if(navigator.share) { navigator.share({title: "${name}", text: "${text}", url: "${url}"}); closeModal(); } else { showToast("Sharing not supported on this browser", "warning"); }'>
-                <i class="fas fa-share-nodes"></i>
-                <span>Nearby Share</span>
             </div>
             <div class="share-opt-btn more" onclick='if(navigator.share) { navigator.share({title: "${name}", text: "${text}", url: "${url}"}); closeModal(); } else { showToast("Sharing not supported on this browser", "warning"); }'>
                 <i class="fas fa-ellipsis-h"></i>
@@ -820,7 +839,7 @@ async function loadProductDetail() {
                              style="object-fit:cover; width:100%; border-radius:10px; transition:opacity 0.25s ease;">
                         <div class="image-overlay-btns">
                             <div class="overlay-btn wishlist-toggle ${isWishlisted ? 'wishlisted' : ''}" onclick='toggleWishlist(${JSON.stringify(product).replace(/'/g, "&#39;")})' title="Add to Wishlist"><i class="fas fa-heart"></i></div>
-                            <div class="overlay-btn share-btn" onclick='shareProduct("${product.name}", "Check out this ${isBeautyParlour ? 'service' : 'design'}: ${product.name}")' title="Share"><i class="fas fa-share-nodes"></i></div>
+                            <div class="overlay-btn share-btn" onclick='shareProduct("${product.name}", "Check out this ${isBeautyParlour ? 'service' : 'design'}: ${product.name}", "${images[0] || product.image}")' title="Share"><i class="fas fa-share-nodes"></i></div>
                         </div>
                     </div>
                 </div>
