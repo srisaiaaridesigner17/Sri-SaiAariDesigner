@@ -696,13 +696,9 @@ function renderProductCards(products, containerId) {
                         </div>
                         <p class="product-price">₹ ${product.price}</p>
                         <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; margin-top: auto; padding-top: 15px;">
-                            <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'd like to book a service:
-*Service:* ${product.name}
-*Price:* ₹${product.price}
-*Duration:* ${product.duration}
-*Link:* ` + window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id)}" target="_blank" class="btn" style="flex: 1; background-color: #25d366; color: white; padding: 10px; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                            <button onclick="handleServiceBooking('${product.name.replace(/'/g, "\\'")}', '${product.price}', '${product.duration}', '', '${window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id}')" class="btn" style="flex: 1; background-color: #25d366; color: white; padding: 10px; border: none; display: flex; align-items: center; justify-content: center; gap: 8px;">
                                 <i class="fab fa-whatsapp"></i> Book Now
-                            </a>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -896,15 +892,9 @@ async function loadProductDetail() {
                     <p class="product-detail-desc" style="font-size: 1.1rem; line-height: 1.6; margin-top: 15px;">${product.description}</p>
                     <div style="display: flex; gap: 10px; flex-wrap: wrap; margin-top: 30px;">
                         ${isBeautyParlour ? `
-                            <a href="https://wa.me/919688561269?text=${encodeURIComponent(`${product.image}
-                            
-Hello, I'd like to book a service:
-*Service:* ${product.name}
-*Price:* ₹${product.price}
-*Duration:* ${product.duration}
-*Link:* ${window.location.href}`)}" target="_blank" class="btn" style="flex: 1; min-width: 200px; background-color: #25d366; color: white; padding: 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; text-decoration: none;">
+                            <button onclick="handleServiceBooking('${product.name.replace(/'/g, "\\'")}', '${product.price}', '${product.duration}', '${product.image}', '${window.location.href}')" class="btn" style="flex: 1; min-width: 200px; background-color: #25d366; color: white; padding: 15px; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; gap: 10px; border: none; text-decoration: none;">
                                 <i class="fab fa-whatsapp" style="font-size: 1.5rem;"></i> Book via WhatsApp
-                            </a>
+                            </button>
                         ` : `
                             <button class="btn btn-outline" style="flex: 1; padding: 15px; font-size: 1.1rem;" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")})' ${product.stock === 0 ? 'disabled' : ''}>
                                 Add to Cart
