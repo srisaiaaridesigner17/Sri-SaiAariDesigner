@@ -280,304 +280,304 @@ window.toggleFilterSidebar = function() {
         
         // Detect from URL if no active toggle found
         if (window.location.pathname.includes('beauty-parlour')) {
-            type = 'beauty-parlour';
-        } else if (activeTab) {
-            const text = activeTab.innerText;
-            if (text.includes('Parlour') || text.includes('Parlor') || text.includes('Services') || text.includes('Beauty')) {
                 type = 'beauty-parlour';
+            } else if (activeTab) {
+                const text = activeTab.innerText;
+                if (text.includes('Parlour') || text.includes('Services') || text.includes('Beauty')) {
+                    type = 'beauty-parlour';
+                }
             }
+            updateSidebarContent(type);
         }
-        updateSidebarContent(type);
-    }
-    
-    if (sidebar) sidebar.classList.toggle('active');
-    if (overlay) overlay.classList.toggle('active');
-};
-
-function updateSidebarContent(type) {
-    const container = document.getElementById('sidebar-filter-content');
-    if (!container) return;
-
-    const clearBtn = document.getElementById('sidebar-clear-btn');
-    const applyBtn = document.getElementById('sidebar-apply-btn');
-    
-    if (clearBtn) clearBtn.setAttribute('onclick', `clearFilters('${type}')`);
-    if (applyBtn) applyBtn.setAttribute('onclick', `applyFilters('${type}')`);
-
-    if (type === 'boutique') {
-        container.innerHTML = `
-            <!-- Category -->
-            <div class="filter-group">
-                <div class="filter-group-title">Category</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="category" value="Bridal Aari Blouse"> Bridal Aari Blouse</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Party Wear Blouse"> Party Wear Blouse</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Traditional Aari Blouse"> Traditional Aari Blouse</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Designer Aari Blouse"> Designer Aari Blouse</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Modern Blouse"> Modern Blouse</label>
-                </div>
-            </div>
-
-            <!-- Price Range -->
-            <div class="filter-group">
-                <div class="filter-group-title">Price Range</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹500 – ₹1000"> ₹500 – ₹1000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹1000 – ₹2000"> ₹1000 – ₹2000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹2000 – ₹3000"> ₹2000 – ₹3000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹3000 – ₹5000"> ₹3000 – ₹5000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="Above ₹5000" data-min="5000"> Above ₹5000</label>
-                </div>
-            </div>
-
-            <!-- Work Type -->
-            <div class="filter-group">
-                <div class="filter-group-title">Work Type</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="workType" value="Zardosi Work"> Zardosi Work</label>
-                    <label class="filter-option"><input type="checkbox" name="workType" value="Stone Work"> Stone Work</label>
-                    <label class="filter-option"><input type="checkbox" name="workType" value="Beads Work"> Beads Work</label>
-                    <label class="filter-option"><input type="checkbox" name="workType" value="Mirror Work"> Mirror Work</label>
-                    <label class="filter-option"><input type="checkbox" name="workType" value="Pearl Work"> Pearl Work</label>
-                </div>
-            </div>
-
-            <!-- Fabric -->
-            <div class="filter-group">
-                <div class="filter-group-title">Fabric</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="fabric" value="Silk"> Silk</label>
-                    <label class="filter-option"><input type="checkbox" name="fabric" value="Cotton"> Cotton</label>
-                    <label class="filter-option"><input type="checkbox" name="fabric" value="Velvet"> Velvet</label>
-                    <label class="filter-option"><input type="checkbox" name="fabric" value="Net"> Net</label>
-                    <label class="filter-option"><input type="checkbox" name="fabric" value="Georgette"> Georgette</label>
-                </div>
-            </div>
-
-            <!-- Neck Design -->
-            <div class="filter-group">
-                <div class="filter-group-title">Neck Design</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="Boat Neck"> Boat Neck</label>
-                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="Round Neck"> Round Neck</label>
-                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="V Neck"> V Neck</label>
-                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="Square Neck"> Square Neck</label>
-                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="High Neck"> High Neck</label>
-                </div>
-            </div>
-
-            <!-- Color -->
-            <div class="filter-group">
-                <div class="filter-group-title">Color</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="color" value="Red"> Red</label>
-                    <label class="filter-option"><input type="checkbox" name="color" value="Green"> Green</label>
-                    <label class="filter-option"><input type="checkbox" name="color" value="Blue"> Blue</label>
-                    <label class="filter-option"><input type="checkbox" name="color" value="Pink"> Pink</label>
-                    <label class="filter-option"><input type="checkbox" name="color" value="Gold"> Gold</label>
-                    <label class="filter-option"><input type="checkbox" name="color" value="Black"> Black</label>
-                </div>
-            </div>
-        `;
-    } else if (type === 'beauty-parlour' || type === 'materials') {
-        container.innerHTML = `
-            <!-- Service Category -->
-            <div class="filter-group">
-                <div class="filter-group-title">Service Category</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="category" value="Hair Services"> Hair Services</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Facial & Skin Care"> Facial & Skin Care</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Makeup Services"> Makeup Services</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Nail Care"> Nail Care</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Spa & Massage"> Spa & Massage</label>
-                    <label class="filter-option"><input type="checkbox" name="category" value="Bridal Services"> Bridal Services</label>
-                </div>
-            </div>
-
-            <!-- Filter buttons for Beauty Parlour -->
-            <div class="filter-group">
-                <div class="filter-group-title">Quick Filters</div>
-                <div class="filter-options">
-                    <button class="filter-btn active" data-filter="all">All Services</button>
-                    <button class="filter-btn" data-filter="Hair">Hair</button>
-                    <button class="filter-btn" data-filter="Facial">Facial</button>
-                    <button class="filter-btn" data-filter="Bridal">Bridal</button>
-                    <button class="filter-btn" data-filter="Makeup">Makeup</button>
-                </div>
-            </div>
-
-            <!-- Price Range -->
-            <div class="filter-group">
-                <div class="filter-group-title">Price Range</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹0 – ₹500"> ₹0 – ₹500</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹500 – ₹1000"> ₹500 – ₹1000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹1000 – ₹2000"> ₹1000 – ₹2000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="₹2000 – ₹3000"> ₹2000 – ₹3000</label>
-                    <label class="filter-option"><input type="checkbox" name="price" value="Above ₹3000"> Above ₹3000</label>
-                </div>
-            </div>
-
-            <!-- Service Type -->
-            <div class="filter-group">
-                <div class="filter-group-title">Service Type</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="serviceType" value="Haircut"> Haircut</label>
-                    <label class="filter-option"><input type="checkbox" name="serviceType" value="Hair Coloring"> Hair Coloring</label>
-                    <label class="filter-option"><input type="checkbox" name="serviceType" value="Facial"> Facial</label>
-                    <label class="filter-option"><input type="checkbox" name="serviceType" value="Manicure"> Manicure</label>
-                    <label class="filter-option"><input type="checkbox" name="serviceType" value="Pedicure"> Pedicure</label>
-                    <label class="filter-option"><input type="checkbox" name="serviceType" value="Bridal Makeup"> Bridal Makeup</label>
-                </div>
-            </div>
-
-            <!-- Skin / Hair Concern -->
-            <div class="filter-group">
-                <div class="filter-group-title">Skin / Hair Concern</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="concern" value="Acne Treatment"> Acne Treatment</label>
-                    <label class="filter-option"><input type="checkbox" name="concern" value="Anti-Aging"> Anti-Aging</label>
-                    <label class="filter-option"><input type="checkbox" name="concern" value="Skin Brightening"> Skin Brightening</label>
-                    <label class="filter-option"><input type="checkbox" name="concern" value="Hair Fall Treatment"> Hair Fall Treatment</label>
-                    <label class="filter-option"><input type="checkbox" name="concern" value="Dandruff Treatment"> Dandruff Treatment</label>
-                </div>
-            </div>
-
-            <!-- Duration -->
-            <div class="filter-group">
-                <div class="filter-group-title">Duration</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="duration" value="Under 30 Minutes"> Under 30 Minutes</label>
-                    <label class="filter-option"><input type="checkbox" name="duration" value="30 – 60 Minutes"> 30 – 60 Minutes</label>
-                    <label class="filter-option"><input type="checkbox" name="duration" value="1 – 2 Hours"> 1 – 2 Hours</label>
-                    <label class="filter-option"><input type="checkbox" name="duration" value="Above 2 Hours"> Above 2 Hours</label>
-                </div>
-            </div>
-
-            <!-- Availability -->
-            <div class="filter-group">
-                <div class="filter-group-title">Availability</div>
-                <div class="filter-options">
-                    <label class="filter-option"><input type="checkbox" name="availability" value="Available Today"> Available Today</label>
-                    <label class="filter-option"><input type="checkbox" name="availability" value="Available This Week"> Available This Week</label>
-                    <label class="filter-option"><input type="checkbox" name="availability" value="Weekend Slots"> Weekend Slots</label>
-                </div>
-            </div>
-        `;
-    }
-}
-
-window.applyFilters = async function(type, containerId = 'product-grid') {
-    const filters = {
-        type: type,
-        categories: Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value),
-        priceRanges: Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value),
-        workTypes: Array.from(document.querySelectorAll('input[name="workType"]:checked')).map(cb => cb.value),
-        fabrics: Array.from(document.querySelectorAll('input[name="fabric"]:checked')).map(cb => cb.value),
-        neckDesigns: Array.from(document.querySelectorAll('input[name="neckDesign"]:checked')).map(cb => cb.value),
-        colors: Array.from(document.querySelectorAll('input[name="color"]:checked')).map(cb => cb.value),
-        serviceTypes: Array.from(document.querySelectorAll('input[name="serviceType"]:checked')).map(cb => cb.value),
-        concerns: Array.from(document.querySelectorAll('input[name="concern"]:checked')).map(cb => cb.value),
-        durations: Array.from(document.querySelectorAll('input[name="duration"]:checked')).map(cb => cb.value),
-        materialTypes: Array.from(document.querySelectorAll('input[name="materialType"]:checked')).map(cb => cb.value),
-        sizes: Array.from(document.querySelectorAll('input[name="size"]:checked')).map(cb => cb.value),
-        availability: Array.from(document.querySelectorAll('input[name="availability"]:checked')).map(cb => cb.value)
+        
+        if (sidebar) sidebar.classList.toggle('active');
+        if (overlay) overlay.classList.toggle('active');
     };
-
-    const products = await getLocalProducts(filters);
-    const gridId = type === 'boutique' ? 'product-grid' : 'materials-grid';
-    renderProductCards(products, gridId);
-    toggleFilterSidebar();
-};
-
-window.clearFilters = function(type) {
-    document.querySelectorAll('.filter-content input[type="checkbox"]').forEach(cb => cb.checked = false);
-    applyFilters(type);
-};
-
-async function getLocalProductById(id) {
-    if (!window.api) return defaultProducts.find(p => p._id === id);
-    let product = await window.api.getProductById(id);
-    if (!product) {
-        product = defaultProducts.find(p => p._id === id);
-    }
-    return product;
-}
-
-// Generate stars HTML based on rating
-function generateStars(rating) {
-    let starsHtml = '';
-    for (let i = 1; i <= 5; i++) {
-        if (i <= rating) {
-            starsHtml += '<i class="fas fa-star"></i>';
-        } else {
-            starsHtml += '<i class="far fa-star"></i>';
+    
+    function updateSidebarContent(type) {
+        const container = document.getElementById('sidebar-filter-content');
+        if (!container) return;
+    
+        const clearBtn = document.getElementById('sidebar-clear-btn');
+        const applyBtn = document.getElementById('sidebar-apply-btn');
+        
+        if (clearBtn) clearBtn.setAttribute('onclick', `clearFilters('${type}')`);
+        if (applyBtn) applyBtn.setAttribute('onclick', `applyFilters('${type}')`);
+    
+        if (type === 'boutique') {
+            container.innerHTML = `
+                <!-- Category -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Category</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="category" value="Bridal Aari Blouse"> Bridal Aari Blouse</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Party Wear Blouse"> Party Wear Blouse</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Traditional Aari Blouse"> Traditional Aari Blouse</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Designer Aari Blouse"> Designer Aari Blouse</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Modern Blouse"> Modern Blouse</label>
+                    </div>
+                </div>
+    
+                <!-- Price Range -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Price Range</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹500 – ₹1000"> ₹500 – ₹1000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹1000 – ₹2000"> ₹1000 – ₹2000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹2000 – ₹3000"> ₹2000 – ₹3000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹3000 – ₹5000"> ₹3000 – ₹5000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="Above ₹5000" data-min="5000"> Above ₹5000</label>
+                    </div>
+                </div>
+    
+                <!-- Work Type -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Work Type</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="workType" value="Zardosi Work"> Zardosi Work</label>
+                        <label class="filter-option"><input type="checkbox" name="workType" value="Stone Work"> Stone Work</label>
+                        <label class="filter-option"><input type="checkbox" name="workType" value="Beads Work"> Beads Work</label>
+                        <label class="filter-option"><input type="checkbox" name="workType" value="Mirror Work"> Mirror Work</label>
+                        <label class="filter-option"><input type="checkbox" name="workType" value="Pearl Work"> Pearl Work</label>
+                    </div>
+                </div>
+    
+                <!-- Fabric -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Fabric</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="fabric" value="Silk"> Silk</label>
+                        <label class="filter-option"><input type="checkbox" name="fabric" value="Cotton"> Cotton</label>
+                        <label class="filter-option"><input type="checkbox" name="fabric" value="Velvet"> Velvet</label>
+                        <label class="filter-option"><input type="checkbox" name="fabric" value="Net"> Net</label>
+                        <label class="filter-option"><input type="checkbox" name="fabric" value="Georgette"> Georgette</label>
+                    </div>
+                </div>
+    
+                <!-- Neck Design -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Neck Design</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="neckDesign" value="Boat Neck"> Boat Neck</label>
+                        <label class="filter-option"><input type="checkbox" name="neckDesign" value="Round Neck"> Round Neck</label>
+                        <label class="filter-option"><input type="checkbox" name="neckDesign" value="V Neck"> V Neck</label>
+                        <label class="filter-option"><input type="checkbox" name="neckDesign" value="Square Neck"> Square Neck</label>
+                        <label class="filter-option"><input type="checkbox" name="neckDesign" value="High Neck"> High Neck</label>
+                    </div>
+                </div>
+    
+                <!-- Color -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Color</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="color" value="Red"> Red</label>
+                        <label class="filter-option"><input type="checkbox" name="color" value="Green"> Green</label>
+                        <label class="filter-option"><input type="checkbox" name="color" value="Blue"> Blue</label>
+                        <label class="filter-option"><input type="checkbox" name="color" value="Pink"> Pink</label>
+                        <label class="filter-option"><input type="checkbox" name="color" value="Gold"> Gold</label>
+                        <label class="filter-option"><input type="checkbox" name="color" value="Black"> Black</label>
+                    </div>
+                </div>
+            `;
+        } else if (type === 'beauty-parlour' || type === 'materials') {
+            container.innerHTML = `
+                <!-- Service Category -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Service Category</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="category" value="Hair Services"> Hair Services</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Facial & Skin Care"> Facial & Skin Care</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Makeup Services"> Makeup Services</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Nail Care"> Nail Care</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Spa & Massage"> Spa & Massage</label>
+                        <label class="filter-option"><input type="checkbox" name="category" value="Bridal Services"> Bridal Services</label>
+                    </div>
+                </div>
+    
+                <!-- Filter buttons for Beauty Parlour -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Quick Filters</div>
+                    <div class="filter-options">
+                        <button class="filter-btn active" data-filter="all">All Services</button>
+                        <button class="filter-btn" data-filter="Hair">Hair</button>
+                        <button class="filter-btn" data-filter="Facial">Facial</button>
+                        <button class="filter-btn" data-filter="Bridal">Bridal</button>
+                        <button class="filter-btn" data-filter="Makeup">Makeup</button>
+                    </div>
+                </div>
+    
+                <!-- Price Range -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Price Range</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹0 – ₹500"> ₹0 – ₹500</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹500 – ₹1000"> ₹500 – ₹1000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹1000 – ₹2000"> ₹1000 – ₹2000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="₹2000 – ₹3000"> ₹2000 – ₹3000</label>
+                        <label class="filter-option"><input type="checkbox" name="price" value="Above ₹3000"> Above ₹3000</label>
+                    </div>
+                </div>
+    
+                <!-- Service Type -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Service Type</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="serviceType" value="Haircut"> Haircut</label>
+                        <label class="filter-option"><input type="checkbox" name="serviceType" value="Hair Coloring"> Hair Coloring</label>
+                        <label class="filter-option"><input type="checkbox" name="serviceType" value="Facial"> Facial</label>
+                        <label class="filter-option"><input type="checkbox" name="serviceType" value="Manicure"> Manicure</label>
+                        <label class="filter-option"><input type="checkbox" name="serviceType" value="Pedicure"> Pedicure</label>
+                        <label class="filter-option"><input type="checkbox" name="serviceType" value="Bridal Makeup"> Bridal Makeup</label>
+                    </div>
+                </div>
+    
+                <!-- Skin / Hair Concern -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Skin / Hair Concern</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="concern" value="Acne Treatment"> Acne Treatment</label>
+                        <label class="filter-option"><input type="checkbox" name="concern" value="Anti-Aging"> Anti-Aging</label>
+                        <label class="filter-option"><input type="checkbox" name="concern" value="Skin Brightening"> Skin Brightening</label>
+                        <label class="filter-option"><input type="checkbox" name="concern" value="Hair Fall Treatment"> Hair Fall Treatment</label>
+                        <label class="filter-option"><input type="checkbox" name="concern" value="Dandruff Treatment"> Dandruff Treatment</label>
+                    </div>
+                </div>
+    
+                <!-- Duration -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Duration</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="duration" value="Under 30 Minutes"> Under 30 Minutes</label>
+                        <label class="filter-option"><input type="checkbox" name="duration" value="30 – 60 Minutes"> 30 – 60 Minutes</label>
+                        <label class="filter-option"><input type="checkbox" name="duration" value="1 – 2 Hours"> 1 – 2 Hours</label>
+                        <label class="filter-option"><input type="checkbox" name="duration" value="Above 2 Hours"> Above 2 Hours</label>
+                    </div>
+                </div>
+    
+                <!-- Availability -->
+                <div class="filter-group">
+                    <div class="filter-group-title">Availability</div>
+                    <div class="filter-options">
+                        <label class="filter-option"><input type="checkbox" name="availability" value="Available Today"> Available Today</label>
+                        <label class="filter-option"><input type="checkbox" name="availability" value="Available This Week"> Available This Week</label>
+                        <label class="filter-option"><input type="checkbox" name="availability" value="Weekend Slots"> Weekend Slots</label>
+                    </div>
+                </div>
+            `;
         }
     }
-    return starsHtml;
-}
-
-// Interactive Rating Functions
-window.hoverStar = function (val, productId) {
-    for (let i = 1; i <= 5; i++) {
-        const star = document.getElementById(`star-${productId}-${i}`);
-        if (star) {
-            star.className = i <= val ? 'fas fa-star' : 'far fa-star';
-            star.style.transform = i <= val ? 'scale(1.2)' : 'scale(1)';
+    
+    window.applyFilters = async function(type, containerId = 'product-grid') {
+        const filters = {
+            type: type,
+            categories: Array.from(document.querySelectorAll('input[name="category"]:checked')).map(cb => cb.value),
+            priceRanges: Array.from(document.querySelectorAll('input[name="price"]:checked')).map(cb => cb.value),
+            workTypes: Array.from(document.querySelectorAll('input[name="workType"]:checked')).map(cb => cb.value),
+            fabrics: Array.from(document.querySelectorAll('input[name="fabric"]:checked')).map(cb => cb.value),
+            neckDesigns: Array.from(document.querySelectorAll('input[name="neckDesign"]:checked')).map(cb => cb.value),
+            colors: Array.from(document.querySelectorAll('input[name="color"]:checked')).map(cb => cb.value),
+            serviceTypes: Array.from(document.querySelectorAll('input[name="serviceType"]:checked')).map(cb => cb.value),
+            concerns: Array.from(document.querySelectorAll('input[name="concern"]:checked')).map(cb => cb.value),
+            durations: Array.from(document.querySelectorAll('input[name="duration"]:checked')).map(cb => cb.value),
+            materialTypes: Array.from(document.querySelectorAll('input[name="materialType"]:checked')).map(cb => cb.value),
+            sizes: Array.from(document.querySelectorAll('input[name="size"]:checked')).map(cb => cb.value),
+            availability: Array.from(document.querySelectorAll('input[name="availability"]:checked')).map(cb => cb.value)
+        };
+    
+        const products = await getLocalProducts(filters);
+        const gridId = type === 'boutique' ? 'product-grid' : 'materials-grid';
+        renderProductCards(products, gridId);
+        toggleFilterSidebar();
+    };
+    
+    window.clearFilters = function(type) {
+        document.querySelectorAll('.filter-content input[type="checkbox"]').forEach(cb => cb.checked = false);
+        applyFilters(type);
+    };
+    
+    async function getLocalProductById(id) {
+        if (!window.api) return defaultProducts.find(p => p._id === id);
+        let product = await window.api.getProductById(id);
+        if (!product) {
+            product = defaultProducts.find(p => p._id === id);
         }
+        return product;
     }
-};
-
-window.resetStar = function (productId) {
-    getLocalProductById(productId).then(product => {
-        const rating = product.rating || 5;
+    
+    // Generate stars HTML based on rating
+    function generateStars(rating) {
+        let starsHtml = '';
+        for (let i = 1; i <= 5; i++) {
+            if (i <= rating) {
+                starsHtml += '<i class="fas fa-star"></i>';
+            } else {
+                starsHtml += '<i class="far fa-star"></i>';
+            }
+        }
+        return starsHtml;
+    }
+    
+    // Interactive Rating Functions
+    window.hoverStar = function (val, productId) {
         for (let i = 1; i <= 5; i++) {
             const star = document.getElementById(`star-${productId}-${i}`);
             if (star) {
-                star.className = i <= rating ? 'fas fa-star' : 'far fa-star';
-                star.style.transform = 'scale(1)';
+                star.className = i <= val ? 'fas fa-star' : 'far fa-star';
+                star.style.transform = i <= val ? 'scale(1.2)' : 'scale(1)';
             }
         }
-    });
-};
-
-window.submitRating = async function (val, productId) {
-    let products = JSON.parse(localStorage.getItem('products')) || [];
-    let productIndex = products.findIndex(p => p._id === productId);
-    if (productIndex !== -1) {
-        // Calculate new average
-        const currentRating = products[productIndex].rating || 5;
-        const currentReviews = products[productIndex].reviews || 0;
-
-        const newReviews = currentReviews + 1;
-        // Exact decimal rating
-        const newRating = parseFloat((((currentRating * currentReviews) + val) / newReviews).toFixed(1));
-
-        products[productIndex].rating = newRating;
-        products[productIndex].reviews = newReviews;
-
-        localStorage.setItem('products', JSON.stringify(products));
-
-        // Update UI
-        const reviewCountEl = document.getElementById(`review-count-${productId}`);
-        if (reviewCountEl) reviewCountEl.innerText = newReviews;
-
-        const mainRatingEl = document.getElementById(`main-rating-${productId}`);
-        if (mainRatingEl) mainRatingEl.innerHTML = generateInteractiveStars(newRating, productId) + ` <span style="font-size: 1.2rem; font-weight: bold; margin-left: 5px; color: #333;">${newRating}</span>`;
-
-        // Flash animation
-        for (let i = 1; i <= 5; i++) {
-            const star = document.getElementById(`star-${productId}-${i}`);
-            if (star) {
-                star.style.color = '#ff9800';
-                setTimeout(() => star.style.color = '#f5c518', 300);
+    };
+    
+    window.resetStar = function (productId) {
+        getLocalProductById(productId).then(product => {
+            const rating = product.rating || 5;
+            for (let i = 1; i <= 5; i++) {
+                const star = document.getElementById(`star-${productId}-${i}`);
+                if (star) {
+                    star.className = i <= rating ? 'fas fa-star' : 'far fa-star';
+                    star.style.transform = 'scale(1)';
+                }
             }
+        });
+    };
+    
+    window.submitRating = async function (val, productId) {
+        let products = JSON.parse(localStorage.getItem('products')) || [];
+        let productIndex = products.findIndex(p => p._id === productId);
+        if (productIndex !== -1) {
+            // Calculate new average
+            const currentRating = products[productIndex].rating || 5;
+            const currentReviews = products[productIndex].reviews || 0;
+    
+            const newReviews = currentReviews + 1;
+            // Exact decimal rating
+            const newRating = parseFloat((((currentRating * currentReviews) + val) / newReviews).toFixed(1));
+    
+            products[productIndex].rating = newRating;
+            products[productIndex].reviews = newReviews;
+    
+            localStorage.setItem('products', JSON.stringify(products));
+    
+            // Update UI
+            const reviewCountEl = document.getElementById(`review-count-${productId}`);
+            if (reviewCountEl) reviewCountEl.innerText = newReviews;
+    
+            const mainRatingEl = document.getElementById(`main-rating-${productId}`);
+            if (mainRatingEl) mainRatingEl.innerHTML = generateInteractiveStars(newRating, productId) + ` <span style="font-size: 1.2rem; font-weight: bold; margin-left: 5px; color: #333;">${newRating}</span>`;
+    
+            // Flash animation
+            for (let i = 1; i <= 5; i++) {
+                const star = document.getElementById(`star-${productId}-${i}`);
+                if (star) {
+                    star.style.color = '#ff9800';
+                    setTimeout(() => star.style.color = '#f5c518', 300);
+                }
+            }
+    
+            showToast(`Thank you for rating ${val} ⭐ stars!`, 'success');
+            resetStar(productId);
         }
-
-        showToast(`Thank you for rating ${val} ⭐ stars!`, 'success');
-        resetStar(productId);
-    }
-};
+    };
 
 function generateInteractiveStars(rating, productId) {
     let starsHtml = '';

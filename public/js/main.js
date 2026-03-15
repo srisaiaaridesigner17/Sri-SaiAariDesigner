@@ -412,10 +412,21 @@ function renderSlides(slider, dotsContainer, slides) {
         if (dots[currentSlide]) dots[currentSlide].classList.add('active');
     }
 
-    let slideInterval = setInterval(() => goToSlide(currentSlide + 1), 5000);
+    function startAutoSlide() {
+        clearInterval(slideInterval);
+        slideInterval = setInterval(() => goToSlide(currentSlide + 1), 3000);
+    }
+
+    let slideInterval = setInterval(() => goToSlide(currentSlide + 1), 3000);
+    
     slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-    slider.addEventListener('mouseleave', () => {
-        slideInterval = setInterval(() => goToSlide(currentSlide + 1), 5000);
+    slider.addEventListener('mouseleave', startAutoSlide);
+
+    dots.forEach((dot, i) => {
+        dot.onclick = () => {
+            goToSlide(i);
+            startAutoSlide();
+        };
     });
 }
 
