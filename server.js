@@ -28,8 +28,8 @@ app.use(express.static('public'));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
-.then(() => console.log('✅ Connected to MongoDB Atlas'))
-.catch(err => console.error('❌ MongoDB Connection Error:', err));
+    .then(() => console.log('✅ Connected to MongoDB Atlas'))
+    .catch(err => console.error('❌ MongoDB Connection Error:', err));
 
 // Cloudinary Configuration
 cloudinary.config({
@@ -81,7 +81,7 @@ app.post('/api/auth/signup', async (req, res) => {
 app.post('/api/auth/login', async (req, res) => {
     try {
         const { email, password, firebaseVerified } = req.body;
-        
+
         let user;
         if (firebaseVerified) {
             // If already verified by Firebase on frontend, just get the profile
@@ -93,18 +93,18 @@ app.post('/api/auth/login', async (req, res) => {
 
         if (!user) return res.status(401).json({ message: 'Invalid credentials or account not found' });
 
-        res.json({ 
-            message: 'Login successful', 
-            user: { 
+        res.json({
+            message: 'Login successful',
+            user: {
                 id: user._id,
-                name: user.name, 
-                email: user.email, 
+                name: user.name,
+                email: user.email,
                 role: user.role,
                 phone: user.phone,
                 profileImage: user.profileImage,
                 cart: user.cart,
                 wishlist: user.wishlist
-            } 
+            }
         });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -125,18 +125,18 @@ app.post('/api/auth/google', async (req, res) => {
             await user.save();
         }
 
-        res.json({ 
-            message: 'Login successful', 
-            user: { 
+        res.json({
+            message: 'Login successful',
+            user: {
                 id: user._id,
-                name: user.name, 
-                email: user.email, 
+                name: user.name,
+                email: user.email,
                 role: user.role,
                 phone: user.phone,
                 profileImage: user.profileImage,
                 cart: user.cart,
                 wishlist: user.wishlist
-            } 
+            }
         });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -149,18 +149,18 @@ app.patch('/api/auth/profile/:id', async (req, res) => {
         const updates = req.body;
         const user = await User.findByIdAndUpdate(id, updates, { new: true });
         if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json({ 
-            message: 'Profile updated', 
-            user: { 
+        res.json({
+            message: 'Profile updated',
+            user: {
                 id: user._id,
-                name: user.name, 
-                email: user.email, 
+                name: user.name,
+                email: user.email,
                 role: user.role,
                 phone: user.phone,
                 profileImage: user.profileImage,
                 cart: user.cart,
                 wishlist: user.wishlist
-            } 
+            }
         });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -171,17 +171,17 @@ app.get('/api/auth/profile/:id', async (req, res) => {
     try {
         const user = await User.findById(req.params.id);
         if (!user) return res.status(404).json({ message: 'User not found' });
-        res.json({ 
-            user: { 
+        res.json({
+            user: {
                 id: user._id,
-                name: user.name, 
-                email: user.email, 
+                name: user.name,
+                email: user.email,
                 role: user.role,
                 phone: user.phone,
                 profileImage: user.profileImage,
                 cart: user.cart,
                 wishlist: user.wishlist
-            } 
+            }
         });
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -235,9 +235,9 @@ app.post('/api/auth/forgot-password', async (req, res) => {
             from: process.env.EMAIL_USER,
             subject: 'Password Reset | Sri & Sai Aari Fashion',
             text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-                  `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-                  `${resetUrl}\n\n` +
-                  `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+                `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
+                `${resetUrl}\n\n` +
+                `If you did not request this, please ignore this email and your password will remain unchanged.\n`
         };
 
         await transporter.sendMail(mailOptions);
@@ -356,7 +356,7 @@ app.get('/api/products/:id', async (req, res) => {
 app.post('/api/products', upload.array('images', 5), async (req, res) => {
     try {
         const imageUrls = req.files ? req.files.map(file => file.path) : [];
-        
+
         const newProduct = new Product({
             ...req.body,
             image: imageUrls[0] || '',
@@ -440,8 +440,8 @@ app.post('/api/orders', async (req, res) => {
 app.patch('/api/orders/:id', async (req, res) => {
     try {
         const updatedOrder = await Order.findByIdAndUpdate(
-            req.params.id, 
-            { orderStatus: req.body.orderStatus }, 
+            req.params.id,
+            { orderStatus: req.body.orderStatus },
             { new: true }
         );
         res.json(updatedOrder);
