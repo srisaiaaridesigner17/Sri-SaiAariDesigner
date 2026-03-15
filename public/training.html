@@ -221,7 +221,7 @@
                                 <span><i class="far fa-clock"></i> ${course.duration || 'N/A'}</span>
                                 <span class="training-price">₹${course.price || 0}</span>
                             </div>
-                            <a href="https://wa.me/919688561269?text=${encodeURIComponent('I want to enroll in ' + course.title)}" class="btn" style="width: 100%; margin-top: auto;">Enroll Now</a>
+                            <button onclick="handleEnrollment('${course.title.replace(/'/g, "\\'")}')" class="btn" style="width: 100%; margin-top: auto;">Enroll Now</button>
                         </div>
                     </div>
                 `).join('');

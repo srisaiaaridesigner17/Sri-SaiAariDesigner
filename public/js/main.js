@@ -449,11 +449,20 @@ function renderSlides(slider, dotsContainer, slides) {
     goToSlide(0);
 }
 
+window.handleEnrollment = function(courseTitle) {
+    if (!localStorage.getItem('userToken')) {
+        window.location.href = 'login.html?msg=login_required&redirect=' + encodeURIComponent(window.location.pathname + window.location.search);
+        return;
+    }
+    const whatsappUrl = `https://wa.me/919688561269?text=${encodeURIComponent('I want to enroll in ' + courseTitle)}`;
+    window.open(whatsappUrl, '_blank');
+};
+
 async function initCourses() {
     if (!window.api) return;
     try {
         const courses = await window.api.getCourses();
-        const coursesGrid = document.querySelector('.courses-grid'); // Assuming there's a grid container
+        const coursesGrid = document.querySelector('.courses-grid');
         
         if (coursesGrid && courses.length > 0) {
             coursesGrid.innerHTML = courses.map(course => `
@@ -466,7 +475,7 @@ async function initCourses() {
                             <span><i class="far fa-clock"></i> ${course.duration}</span>
                             <span class="price">₹${course.price}</span>
                         </div>
-                        <button class="btn btn-primary" onclick="window.location.href='contact.html'">Enquire Now</button>
+                        <button class="btn btn-primary" onclick="handleEnrollment('${course.title.replace(/'/g, "\\'")}')">Enroll Now</button>
                     </div>
                 </div>
             `).join('');
