@@ -1,0 +1,213 @@
+/* =========================================
+   admin-dashboard.css  –  Admin Dashboard
+   ========================================= */
+
+.admin-layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    width: 260px;
+    background: #fff;
+    box-shadow: 2px 0 8px rgba(0,0,0,0.06);
+    padding: 28px 20px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    color: var(--primary-color);
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    margin-bottom: 36px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+.sidebar ul {
+    list-style: none;
+    flex: 1;
+}
+
+.sidebar ul li {
+    margin-bottom: 6px;
+}
+
+.sidebar ul li a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 6px;
+    font-weight: 500;
+    color: #555;
+    transition: all 0.25s;
+}
+
+.sidebar ul li a i {
+    width: 20px;
+    text-align: center;
+    font-size: 1.05rem;
+}
+
+.sidebar ul li a:hover,
+.sidebar ul li a.active {
+    background: var(--secondary-color);
+    color: var(--primary-color);
+}
+
+.logout-btn {
+    margin-top: auto;
+    padding: 12px 14px;
+    background: none;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 0.9rem;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: all 0.25s;
+}
+
+.logout-btn:hover {
+    background: #fff0f0;
+    color: #cc4444;
+    border-color: #cc4444;
+}
+
+/* Main content area */
+.main-content {
+    flex: 1;
+    padding: 40px;
+    background: #f4f6f9;
+    overflow-y: auto;
+}
+
+.main-content h1 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-dark);
+    margin-bottom: 30px;
+    font-size: 1.8rem;
+}
+
+/* Stat cards */
+.dashboard-stats {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 22px;
+    margin-bottom: 44px;
+}
+
+.stat-card {
+    background: #fff;
+    padding: 28px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    text-align: center;
+    border-top: 4px solid var(--primary-color);
+}
+
+.stat-card h3 {
+    color: #888;
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.stat-card p {
+    font-size: 2.6rem;
+    font-weight: 700;
+    color: var(--primary-color);
+}
+
+/* Admin card */
+.admin-card {
+    background: #fff;
+    padding: 28px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    margin-bottom: 28px;
+}
+
+.admin-card h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--text-dark);
+    margin-bottom: 18px;
+    font-size: 1.3rem;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #eee;
+}
+
+/* Admin tables */
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+}
+
+.admin-table th,
+.admin-table td {
+    padding: 12px 14px;
+    text-align: left;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.admin-table th {
+    background: var(--secondary-color);
+    font-weight: 600;
+    color: #555;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background: #fdfaf6;
+}
+
+/* Status badges */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.badge-pending   { background: #fff3cd; color: #856404; }
+.badge-confirmed { background: #d1e7dd; color: #0a5c36; }
+.badge-shipped   { background: #cff4fc; color: #055160; }
+.badge-delivered { background: #d3e5ff; color: #084298; }
+.badge-cancelled { background: #f8d7da; color: #842029; }
+
+/* Responsive */
+@media (max-width: 768px) {
+    .admin-layout {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .main-content {
+        padding: 22px 16px;
+    }
+
+    .dashboard-stats {
+        grid-template-columns: 1fr 1fr;
+    }
+}

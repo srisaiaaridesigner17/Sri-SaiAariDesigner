@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Beauty Parlour | Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul style="list-style: none;">
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="add-product.html"><i class="fas fa-plus"></i> Add Product</a></li>
+                <li><a href="manage-boutique.html"><i class="fas fa-tshirt"></i> Manage Boutique</a></li>
+                <li><a href="manage-parlour.html" class="active"><i class="fas fa-spa"></i> Manage Beauty Parlour</a></li>
+                <li><a href="manage-slider.html"><i class="fas fa-images"></i> Manage Slider</a></li>
+                <li><a href="manage-courses.html"><i class="fas fa-graduation-cap"></i> Manage Courses</a></li>
+                <li><a href="../index.html"><i class="fas fa-home"></i> Go to Home Page</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="section-title" style="text-align: left;">Manage Beauty Parlour Services</h1>
+            
+            <div class="admin-card">
+                <div style="overflow-x: auto;">
+                    <table class="admin-table" id="manage-products-table">
+                        <thead>
+                            <tr>
+                                <th>Image</th>
+                                <th>Name</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Duration</th>
+                                <th>Rating</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="manage-products-body">
+                            <tr><td colspan="7">Loading services...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Edit Product Modal (Unified in admin.js) -->
+            <div id="edit-modal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:999; justify-content:center; align-items:center;">
+                <div style="background:#fff; padding:30px; border-radius:12px; max-width:500px; width:90%; max-height:90vh; overflow-y:auto; box-shadow:0 8px 32px rgba(0,0,0,0.2);">
+                    <h2 style="font-family:'Playfair Display',serif; color:var(--primary-color); margin-bottom:20px;">Edit Service</h2>
+                    <form id="edit-product-form">
+                        <input type="hidden" id="edit-id">
+                        <div class="form-group">
+                            <label>Service Name</label>
+                            <input type="text" id="edit-name" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Price (₹)</label>
+                            <input type="number" id="edit-price" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Category</label>
+                            <select id="edit-category" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;" required>
+                                <option value="Hair Services">Hair Services</option>
+                                <option value="Facial & Skin Care">Facial & Skin Care</option>
+                                <option value="Makeup Services">Makeup Services</option>
+                                <option value="Nail Care">Nail Care</option>
+                                <option value="Spa & Massage">Spa & Massage</option>
+                                <option value="Bridal Services">Bridal Services</option>
+                            </select>
+                        </div>
+                        <div id="edit-service-fields">
+                            <div class="form-group">
+                                <label>Service Duration</label>
+                                <input type="text" id="edit-duration" placeholder="e.g. 45 Mins">
+                            </div>
+                            <div class="form-group">
+                                <label>Skin/Hair Concern</label>
+                                <select id="edit-concern" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
+                                    <option value="Standard">Standard</option>
+                                    <option value="Acne Treatment">Acne Treatment</option>
+                                    <option value="Anti-Aging">Anti-Aging</option>
+                                    <option value="Skin Brightening">Skin Brightening</option>
+                                    <option value="Hair Fall Treatment">Hair Fall Treatment</option>
+                                    <option value="Dandruff Treatment">Dandruff Treatment</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Service Type</label>
+                                <select id="edit-serviceType" style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px;">
+                                    <option value="Standard">Standard</option>
+                                    <option value="Haircut">Haircut</option>
+                                    <option value="Hair Coloring">Hair Coloring</option>
+                                    <option value="Facial">Facial</option>
+                                    <option value="Manicure">Manicure</option>
+                                    <option value="Pedicure">Pedicure</option>
+                                    <option value="Bridal Makeup">Bridal Makeup</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>Service Image</label>
+                            <input type="file" id="edit-image-file" accept="image/*" multiple>
+                            <div id="edit-image-preview" style="margin-top: 10px; display: none; gap: 10px; flex-wrap: wrap;"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Description</label>
+                            <textarea id="edit-description" rows="3" required style="width:100%; padding:10px; border:1px solid #ddd; border-radius:4px; font-family:inherit;"></textarea>
+                        </div>
+                        <div style="display:flex; gap:10px;">
+                            <button type="submit" class="btn" style="flex:1;">Save Changes</button>
+                            <button type="button" class="btn btn-outline" style="flex:1;" onclick="closeEditModal()">Cancel</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadManageProducts('beauty-parlour');
+        });
+    </script>
+</body>
+</html>

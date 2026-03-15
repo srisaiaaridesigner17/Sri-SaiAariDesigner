@@ -1,0 +1,59 @@
+/* =========================================
+   index.css  –  Home page specific styles
+   ========================================= */
+
+/* Hero section */
+.hero {
+    background: linear-gradient(rgba(253,250,246,0.82), rgba(253,250,246,0.82)),
+        url('https://images.unsplash.com/photo-1558769132-cb1fac0840f2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80')
+        center/cover no-repeat;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+}
+
+.hero-content {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.hero-content h1 {
+    font-size: 4rem;
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+    line-height: 1.2;
+}
+
+.hero-content p {
+    font-size: 1.2rem;
+    margin-bottom: 30px;
+    color: #555;
+}
+
+/* Featured section */
+.products-section {
+    padding: 70px 0;
+}
+
+.products-section .view-all-wrap {
+    text-align: center;
+    margin-top: 40px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-content h1 {
+        font-size: 2.4rem;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .hero {
+        min-height: 60vh;
+    }
+}

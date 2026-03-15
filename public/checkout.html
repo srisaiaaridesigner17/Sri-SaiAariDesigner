@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout | Sri & Sai Aari Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/checkout.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <img src="./images/sri-logo2.png" alt="Sri & Sai Aari Fashion"  class="logo-img">
+                Sri & Sai Aari Fashion
+            </a>
+            <nav class="nav-links">
+                <a href="cart.html" style="color: var(--primary-color)">Return to Cart</a>
+            </nav>
+        </div>
+    </header>
+
+    <section class="checkout-section">
+        <h1 class="section-title">Checkout</h1>
+        <div class="checkout-form">
+            <form id="checkout-form">
+                <div class="customization-section" style="background: var(--secondary-color); padding: 20px; border-radius: 8px; margin-bottom: 30px; border: 1px dashed var(--primary-color);">
+                    <h3 style="font-family: 'Playfair Display', serif; color: var(--primary-color); margin-bottom: 15px;"><i class="fas fa-magic"></i> Customization (Optional)</h3>
+                    
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Fabric Material</label>
+                            <select id="cust-fabric" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Standard">Standard (As per design)</option>
+                                <option value="Raw Silk">Raw Silk</option>
+                                <option value="Pure Silk">Pure Silk (Kanchipuram)</option>
+                                <option value="Cotton">Cotton</option>
+                                <option value="Georgette">Georgette</option>
+                                <option value="Velvet">Velvet</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Neck Design</label>
+                            <select id="cust-neck" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Standard">Standard Neck</option>
+                                <option value="Round Neck">Round Neck</option>
+                                <option value="V-Neck">V-Neck</option>
+                                <option value="Boat Neck">Boat Neck</option>
+                                <option value="Sweetheart Neck">Sweetheart Neck</option>
+                                <option value="High Neck">High Neck / Collar</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row" style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px;">
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Sleeve Type</label>
+                            <select id="cust-sleeve" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Short">Short Sleeves</option>
+                                <option value="Elbow">Elbow Length</option>
+                                <option value="3/4th">3/4th Sleeves</option>
+                                <option value="Full">Full Sleeves</option>
+                                <option value="Sleeveless">Sleeveless</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label>Aari Work Style</label>
+                            <select id="cust-work" class="form-input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Standard">Standard Work</option>
+                                <option value="Simple">Simple Thread Work</option>
+                                <option value="Zardosi">Zardosi Heavy Work</option>
+                                <option value="Bridal">Bridal Motif Work</option>
+                                <option value="Cut">Cut Work</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Special Instructions / Measurements</label>
+                        <textarea id="cust-notes" rows="3" placeholder="Enter height, bust size, or any specific design requests..."></textarea>
+                    </div>
+                </div>
+
+                <h3 style="margin-bottom: 20px; border-bottom: 2px solid var(--secondary-color); padding-bottom: 10px; color: var(--primary-color); font-family: 'Playfair Display', serif;">Shipping Information</h3>
+                
+                <div id="new-address-form">
+                    <div class="form-group">
+                        <label for="name">Full Name *</label>
+                        <input type="text" id="name" placeholder="John Doe">
+                    </div>
+                <div class="form-group">
+                    <label for="phone">Phone Number *</label>
+                    <input type="tel" id="phone" required placeholder="9876543210" pattern="[0-9]{10}">
+                </div>
+                <div class="form-group">
+                    <label for="address">Delivery Address *</label>
+                    <textarea id="address" rows="4" required placeholder="123, Street name, City - State, Pincode"></textarea>
+                </div>
+                </div> <!-- Closing new-address-form -->
+                
+                <div style="margin-top: 30px;">
+                    <button type="submit" class="btn" style="width: 100%; padding: 15px; font-size: 1.1rem; background-color: #25D366; color: white; display: flex; align-items: center; justify-content: center; gap: 10px;">
+                        <i class="fab fa-whatsapp" style="font-size: 1.3rem;"></i> Place Order via WhatsApp
+                    </button>
+                    <p style="text-align: center; margin-top: 15px; font-size: 0.9rem; color: #666;">
+                        You will be redirected to WhatsApp with your order details to complete the purchase directly with us.
+                    </p>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- Universal Footer -->
+    <footer class="footer-extended">
+        <div class="footer-top" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 40px; padding: 60px 20px; max-width: 1200px; margin: 0 auto;">
+            <div class="footer-col">
+                <h3>AARI ELEGANCE</h3>
+                <p>We understand that fashion is more than just clothing; it's a representation of your personal style,
+                    traditions, and unforgettable moments.</p>
+                <a href="mailto:srisaiaariedesigner17@gmail.com" class="contact-highlight">Mail us - srisaiaariedesigner17@gmail.com</a><br>
+                <a href="tel:+919688561269" class="contact-highlight">Customer Care - +91 9688561269</a>
+            </div>
+
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;"><a href="index.html">Home</a></li>
+                    <li style="margin-bottom: 10px;"><a href="about.html">About Us</a></li>
+                    <li style="margin-bottom: 10px;"><a href="products.html">Shop Designs</a></li>
+                    <li style="margin-bottom: 10px;"><a href="training.html">Professional Training</a></li>
+                    <li style="margin-bottom: 10px;"><a href="account.html">My Account</a></li>
+
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Policies</h3>
+                <ul style="list-style: none; padding: 0;">
+                    <li style="margin-bottom: 10px;"><a href="#">Privacy Policy</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#">Terms and Conditions</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#">Shipping Policy</a></li>
+                    <li style="margin-bottom: 10px;"><a href="#">Cancellation and Refund</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-col">
+                <h3>Location</h3>
+                <p>Hospital street,<br>
+Mega hyper mall opposite,<br>
+Thiruthuraipoondi - 614 713</p>
+
+                <h3 style="margin-top: 20px;">Timing</h3>
+                <p>10:00 AM to 9:00 PM<br>(Monday to Saturday)</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom" style="text-align: center; padding: 20px; border-top: 1px solid #eee; margin-top: 40px;">
+            <p>&copy; 2023 Sri & Sai Aari Fashion Boutique. All Rights Reserved. Secure payment through WhatsApp orders.</p>
+            <div class="footer-socials" style="margin-top: 15px; display: flex; justify-content: center; gap: 15px;">
+                <a href="https://www.facebook.com/share/1CSZWAPEJn/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/sri_saiaari_designer?igsh=MXAyMzZhcWxkbXVtNQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@srisaiaaridesigner1065"><i class="fab fa-youtube"></i></a>
+
+            </div>
+        </div>
+    </footer>
+
+    <!-- Razorpay Checkout script -->
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="js/api.js"></script>
+    </script>
+    <script src="js/checkout.js"></script>
+</body>
+</html>
+

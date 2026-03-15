@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Training | Sri & Sai Aari Academy</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .training-hero {
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1516321318423-f06f85e504b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 100px 20px;
+            text-align: center;
+        }
+        .training-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-top: 40px;
+        }
+        .training-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            transition: var(--transition);
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .training-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+        }
+        .training-media {
+            width: 100%;
+            aspect-ratio: 16/9;
+            object-fit: cover;
+        }
+        .training-content {
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+        .training-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+        .training-title {
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            color: var(--text-dark);
+        }
+        .training-desc {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 20px;
+            font-size: 0.95rem;
+        }
+        .training-meta {
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.9rem;
+            color: #888;
+            margin-bottom: 15px;
+        }
+        .training-price {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                <img src="./images/sri-logo2.png" alt="Sri & Sai Aari Fashion"  class="logo-img">
+                Sri & Sai Aari Fashion
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" title="Home">
+                    <i class="fas fa-house"></i>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="products.html" title="Shop Designs">
+                    <i class="fas fa-store"></i>
+                    <span class="nav-text">Shop Designs</span>
+                </a>
+                <a href="training.html" title="Professional Training">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="nav-text">Training</span>
+                </a>
+                <a href="about.html" title="About">
+                    <i class="fas fa-circle-info"></i>
+                    <span class="nav-text">About</span>
+                </a>
+                <a href="account.html" title="Account">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-text">Account</span>
+                </a>
+            </nav>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="training-hero">
+        <div class="container">
+            <h1>Professional Training Academy</h1>
+            <p style="font-size: 1.2rem; max-width: 800px; margin: 20px auto;">Master the art of fashion, beauty, and craftsmanship with our professional certification courses.</p>
+        </div>
+    </section>
+
+    <section class="container" style="padding: 80px 20px;">
+        <h2 class="section-title">Explore Our Courses</h2>
+        <p style="text-align: center; color: #666; max-width: 700px; margin: 0 auto 40px;">We provide high-quality training with industry experts to help you build a successful career.</p>
+
+        <div class="training-grid" id="training-grid">
+            <!-- Loading indicator -->
+            <p style="grid-column: 1/-1; text-align: center;">Loading courses...</p>
+        </div>
+    </section>
+
+    <footer class="footer-extended">
+        <div class="footer-top">
+            <div class="footer-col">
+                <h3>SRI & SAI ACADEMY</h3>
+                <p>Fashion is more than just clothing; it's a representation of your personal style, traditions, and unforgettable moments.</p>
+                <a href="mailto:srisaiaariedesigner17@gmail.com" class="contact-highlight">Mail us - srisaiaariedesigner17@gmail.com</a><br>
+                <a href="tel:+919688561269" class="contact-highlight">Customer Care - +91 9688561269</a>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="products.html">Shop Designs</a></li>
+                    <li><a href="training.html">Professional Training</a></li>
+                    <li><a href="account.html">My Account</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Policies</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Cancellation and Refund</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Location</h3>
+                <p>Hospital Street,<br>
+                    Mega Hyper Mall Opposite,<br>
+                    Thiruthuraipoondi - 614 713</p>
+                <h3 style="margin-top: 20px;">Timing</h3>
+                <p>10:00 AM to 9:00 PM<br>(Monday to Saturday)</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Sri & Sai Academy. All Rights Reserved.</p>
+            <div class="footer-socials">
+                <a href="https://www.facebook.com/share/1CSZWAPEJn/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/sri_saiaari_designer?igsh=MXAyMzZhcWxkbXVtNQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@srisaiaaridesigner1065"><i class="fab fa-youtube"></i></a>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+             await loadTrainingCourses();
+        });
+
+        async function loadTrainingCourses() {
+            if (!window.api) return;
+            try {
+                const courses = await window.api.getCourses();
+                const container = document.getElementById('training-grid');
+                if (!container) return;
+
+                if (!courses || courses.length === 0) {
+                    container.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">No professional courses listed at the moment. Please check back later!</p>';
+                    return;
+                }
+
+                container.innerHTML = courses.map(course => `
+                    <div class="training-card">
+                        <img src="${course.image}" class="training-media" alt="${course.title}">
+                        <div class="training-content">
+                            <span class="training-tag">CERTIFIED</span>
+                            <h3 class="training-title">${course.title}</h3>
+                            <p class="training-desc">${course.description}</p>
+                            <div class="training-meta">
+                                <span><i class="far fa-clock"></i> ${course.duration || 'N/A'}</span>
+                                <span class="training-price">₹${course.price || 0}</span>
+                            </div>
+                            <a href="https://wa.me/919688561269?text=${encodeURIComponent('I want to enroll in ' + course.title)}" class="btn" style="width: 100%; margin-top: auto;">Enroll Now</a>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+                document.getElementById('training-grid').innerHTML = '<p>Error loading courses.</p>';
+            }
+        }
+    </script>
+</body>
+</html>

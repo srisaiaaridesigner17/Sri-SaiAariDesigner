@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Product | Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul style="list-style: none;">
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="add-product.html" class="active"><i class="fas fa-plus"></i> Add Product</a></li>
+                <li><a href="manage-boutique.html"><i class="fas fa-tshirt"></i> Manage Boutique</a></li>
+                <li><a href="manage-parlour.html"><i class="fas fa-spa"></i> Manage Beauty Parlour</a></li>
+                <li><a href="manage-slider.html"><i class="fas fa-images"></i> Manage Slider</a></li>
+                <li><a href="manage-courses.html"><i class="fas fa-graduation-cap"></i> Manage Courses</a></li>
+                <li><a href="../index.html"><i class="fas fa-home"></i> Go to Home Page</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="section-title" style="text-align: left;">Add New Product</h1>
+            
+            <div class="admin-card" style="max-width: 600px;">
+                <form id="add-product-form">
+                    <div class="form-group">
+                        <label>Product Name</label>
+                        <input type="text" id="name" required placeholder="Bridal Aari Work Blouse">
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="price" required placeholder="5000">
+                    </div>
+                    <div class="form-group">
+                        <label>Section</label>
+                        <select id="section" class="form-group input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" required>
+                            <option value="boutique">Boutique</option>
+                            <option value="beauty-parlour">Beauty Parlour</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Sub-Category</label>
+                        <select id="category" class="form-group input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;" required>
+                            <option value="bridal">Bridal</option>
+                            <option value="traditional">Traditional</option>
+                            <option value="modern">Modern</option>
+                            <option value="party">Party Wear</option>
+                            <option value="simple">Simple / Casual</option>
+                            <option value="Hair Services">Hair Services</option>
+                            <option value="Facial & Skin Care">Facial & Skin Care</option>
+                            <option value="Makeup Services">Makeup Services</option>
+                            <option value="Nail Care">Nail Care</option>
+                            <option value="Spa & Massage">Spa & Massage</option>
+                            <option value="Bridal Services">Bridal Services</option>
+                        </select>
+                    </div>
+                    <div id="service-fields" style="display: none;">
+                        <div class="form-group">
+                            <label>Service Duration</label>
+                            <input type="text" id="duration" placeholder="e.g. 45 Mins or 2 Hours">
+                        </div>
+                        <div class="form-group">
+                            <label>Skin/Hair Concern</label>
+                            <select id="concern" class="form-group input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Standard">Standard</option>
+                                <option value="Acne Treatment">Acne Treatment</option>
+                                <option value="Anti-Aging">Anti-Aging</option>
+                                <option value="Skin Brightening">Skin Brightening</option>
+                                <option value="Hair Fall Treatment">Hair Fall Treatment</option>
+                                <option value="Dandruff Treatment">Dandruff Treatment</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Service Type (for filtering)</label>
+                            <select id="serviceType" class="form-group input" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px;">
+                                <option value="Standard">Standard</option>
+                                <option value="Haircut">Haircut</option>
+                                <option value="Hair Coloring">Hair Coloring</option>
+                                <option value="Facial">Facial</option>
+                                <option value="Manicure">Manicure</option>
+                                <option value="Pedicure">Pedicure</option>
+                                <option value="Bridal Makeup">Bridal Makeup</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Stock Quantity</label>
+                        <input type="number" id="stock" required placeholder="10">
+                    </div>
+                    <div class="form-group">
+                        <label>Product Image</label>
+                        <input type="file" id="image-file" accept="image/*" multiple required>
+                        <input type="hidden" id="image-base64">
+                        <div id="image-preview" style="margin-top: 10px; display: none; gap: 10px; flex-wrap: wrap;">
+                            <img src="" alt="Preview" style="max-width: 100%; height: 150px; object-fit: contain; background: #f8f9fa; border-radius: 4px;">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="description" rows="4" required placeholder="Detailed design description..." style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 4px; font-family: inherit;"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="width: 100%; margin-top: 10px; font-size: 1.1rem;">Add Product</button>
+                    <p id="product-status" style="margin-top: 15px; font-weight: bold;"></p>
+                </form>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            
+            const sectionSelect = document.getElementById('section');
+            const categorySelect = document.getElementById('category');
+            const serviceFields = document.getElementById('service-fields');
+            const stockGroup = document.getElementById('stock').closest('.form-group');
+
+            const boutiqueOptions = `
+                <option value="bridal">Bridal</option>
+                <option value="traditional">Traditional</option>
+                <option value="modern">Modern</option>
+                <option value="party">Party Wear</option>
+                <option value="simple">Simple / Casual</option>
+            `;
+            const parlourOptions = `
+                <option value="Hair Services">Hair Services</option>
+                <option value="Facial & Skin Care">Facial & Skin Care</option>
+                <option value="Makeup Services">Makeup Services</option>
+                <option value="Nail Care">Nail Care</option>
+                <option value="Spa & Massage">Spa & Massage</option>
+                <option value="Bridal Services">Bridal Services</option>
+            `;
+
+            sectionSelect.addEventListener('change', () => {
+                const val = sectionSelect.value;
+                if (val === 'beauty-parlour') {
+                    categorySelect.innerHTML = parlourOptions;
+                    serviceFields.style.display = 'block';
+                    stockGroup.style.display = 'none';
+                    document.getElementById('stock').value = '999'; // Default high stock for services
+                } else if (val === 'aari') {
+                    categorySelect.innerHTML = boutiqueOptions;
+                    serviceFields.style.display = 'none';
+                    stockGroup.style.display = 'block';
+                } else {
+                    categorySelect.innerHTML = boutiqueOptions;
+                    serviceFields.style.display = 'none';
+                    stockGroup.style.display = 'block';
+                }
+            });
+            
+            // Trigger initial change event to set correct category options
+            sectionSelect.dispatchEvent(new Event('change'));
+        });
+    </script>
+</body>
+</html>

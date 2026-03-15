@@ -1,0 +1,104 @@
+/* =========================================
+   checkout.css  –  Checkout page
+   ========================================= */
+
+.checkout-section {
+    padding: 60px 0;
+    max-width: 640px;
+    margin: 0 auto;
+}
+
+.checkout-form {
+    background: #fff;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: var(--shadow);
+    border-top: 4px solid var(--primary-color);
+}
+
+.checkout-form h2 {
+    font-family: 'Playfair Display', serif;
+    color: var(--primary-color);
+    margin-bottom: 28px;
+    font-size: 1.8rem;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.form-group input,
+.form-group textarea,
+.form-group select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    font-family: inherit;
+    font-size: 0.95rem;
+    transition: border-color 0.3s;
+    background: #fff;
+}
+
+.form-group input:focus,
+.form-group textarea:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(212,163,115,0.15);
+}
+
+.order-summary-box {
+    background: var(--secondary-color);
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.order-summary-box h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #444;
+}
+
+.order-summary-box .summary-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    margin-bottom: 8px;
+}
+
+.order-summary-box .total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 1.15rem;
+    font-weight: 700;
+    border-top: 1px solid #ccc;
+    padding-top: 12px;
+    margin-top: 8px;
+    color: var(--primary-color);
+}
+
+.pay-btn {
+    width: 100%;
+    padding: 16px;
+    font-size: 1.1rem;
+    border-radius: 6px;
+    margin-top: 8px;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .checkout-form {
+        padding: 24px 18px;
+    }
+}

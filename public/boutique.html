@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Boutique Designs | Sri & Sai Aari Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/index.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+                 <img src="./images/sri-logo2.png" alt="Sri & Sai Aari Fashion"  class="logo-img">
+                Sri & Sai Aari Fashion
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" title="Home">
+                    <i class="fas fa-house"></i>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="products.html" title="Shop Designs">
+                    <i class="fas fa-store"></i>
+                    <span class="nav-text">Shop Designs</span>
+                </a>
+                <a href="training.html" title="Professional Training">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="nav-text">Training</span>
+                </a>
+                <a href="about.html" title="About">
+                    <i class="fas fa-circle-info"></i>
+                    <span class="nav-text">About</span>
+                </a>
+                <a href="account.html" title="Account">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-text">Account</span>
+                </a>
+            </nav>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <div class="category-toggle-container" style="background-color: #fff; padding: 15px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: center; gap: 15px;">
+        <a href="boutique.html" class="category-toggle-btn active" style="flex: 1; max-width: 200px; padding: 12px; background-color: var(--secondary-color); border: 2px solid var(--primary-color); border-radius: 8px; text-align: center; color: var(--text-dark); font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none;">
+            <i class="fas fa-crown" style="color: var(--primary-color);"></i> Boutique
+        </a>
+        <a href="beauty-parlour.html" class="category-toggle-btn" style="flex: 1; max-width: 200px; padding: 12px; background-color: #f4f6f8; border: 2px solid transparent; border-radius: 8px; text-align: center; color: #666; font-weight: bold; display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; transition: var(--transition);">
+            <i class="fas fa-sparkles" style="color: #666;"></i> Beauty Parlour
+        </a>
+    </div>
+
+    <section class="slider-section">
+        <div class="slider-container">
+            <div class="slider" id="home-slider">
+                <img src="https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Special Collection 1">
+                <img src="https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Special Collection 2">
+                <img src="https://images.unsplash.com/photo-1591369062302-3932785d115e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1200&q=80" alt="Special Collection 3">
+            </div>
+            <div class="slider-dots" id="slider-dots"></div>
+        </div>
+    </section>
+
+    <section class="products-section container">
+        <h2 class="section-title">Boutique Collections</h2>
+        
+        <div class="shop-controls" style="margin-bottom: 30px; display: flex; justify-content: flex-start;">
+            <button class="filter-toggle-btn" onclick="toggleFilterSidebar()">
+                <i class="fas fa-filter"></i> FILTER
+            </button>
+        </div>
+
+        <div class="product-grid" id="product-grid"></div>
+        <div class="view-all-wrap" style="text-align: center; margin-top: 40px;">
+            <a href="products.html" class="btn btn-outline" style="padding: 12px 30px; font-size: 1.1rem;">View All Designs</a>
+        </div>
+    </section>
+
+    <!-- Sidebar Filter -->
+    <div class="filter-sidebar-overlay" id="filter-sidebar-overlay" onclick="toggleFilterSidebar()"></div>
+    <div class="filter-sidebar" id="filter-sidebar">
+        <div class="filter-header">
+            <h2>FILTER</h2>
+            <button class="close-filter" onclick="toggleFilterSidebar()">&times;</button>
+        </div>
+        <div class="filter-content">
+            <!-- Category -->
+            <div class="filter-group">
+                <div class="filter-group-title">Category</div>
+                <div class="filter-options">
+                    <label class="filter-option"><input type="checkbox" name="category" value="Bridal Aari Blouse"> Bridal Aari Blouse</label>
+                    <label class="filter-option"><input type="checkbox" name="category" value="Party Wear Blouse"> Party Wear Blouse</label>
+                    <label class="filter-option"><input type="checkbox" name="category" value="Traditional Aari Blouse"> Traditional Aari Blouse</label>
+                    <label class="filter-option"><input type="checkbox" name="category" value="Designer Aari Blouse"> Designer Aari Blouse</label>
+                    <label class="filter-option"><input type="checkbox" name="category" value="Modern Blouse"> Modern Blouse</label>
+                </div>
+            </div>
+
+            <!-- Price Range -->
+            <div class="filter-group">
+                <div class="filter-group-title">Price Range</div>
+                <div class="filter-options">
+                    <label class="filter-option"><input type="checkbox" name="price" value="₹500 – ₹1000"> ₹500 – ₹1000</label>
+                    <label class="filter-option"><input type="checkbox" name="price" value="₹1000 – ₹2000"> ₹1000 – ₹2000</label>
+                    <label class="filter-option"><input type="checkbox" name="price" value="₹2000 – ₹3000"> ₹2000 – ₹3000</label>
+                    <label class="filter-option"><input type="checkbox" name="price" value="₹3000 – ₹5000"> ₹3000 – ₹5000</label>
+                    <label class="filter-option"><input type="checkbox" name="price" value="Above ₹5000"> Above ₹5000</label>
+                </div>
+            </div>
+
+            <!-- Work Type -->
+            <div class="filter-group">
+                <div class="filter-group-title">Work Type</div>
+                <div class="filter-options">
+                    <label class="filter-option"><input type="checkbox" name="workType" value="Zardosi Work"> Zardosi Work</label>
+                    <label class="filter-option"><input type="checkbox" name="workType" value="Stone Work"> Stone Work</label>
+                    <label class="filter-option"><input type="checkbox" name="workType" value="Beads Work"> Beads Work</label>
+                    <label class="filter-option"><input type="checkbox" name="workType" value="Mirror Work"> Mirror Work</label>
+                    <label class="filter-option"><input type="checkbox" name="workType" value="Pearl Work"> Pearl Work</label>
+                </div>
+            </div>
+
+            <!-- Fabric -->
+            <div class="filter-group">
+                <div class="filter-group-title">Fabric</div>
+                <div class="filter-options">
+                    <label class="filter-option"><input type="checkbox" name="fabric" value="Silk"> Silk</label>
+                    <label class="filter-option"><input type="checkbox" name="fabric" value="Cotton"> Cotton</label>
+                    <label class="filter-option"><input type="checkbox" name="fabric" value="Velvet"> Velvet</label>
+                    <label class="filter-option"><input type="checkbox" name="fabric" value="Net"> Net</label>
+                    <label class="filter-option"><input type="checkbox" name="fabric" value="Georgette"> Georgette</label>
+                </div>
+            </div>
+
+            <!-- Neck Design -->
+            <div class="filter-group">
+                <div class="filter-group-title">Neck Design</div>
+                <div class="filter-options">
+                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="Boat Neck"> Boat Neck</label>
+                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="Round Neck"> Round Neck</label>
+                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="V Neck"> V Neck</label>
+                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="Square Neck"> Square Neck</label>
+                    <label class="filter-option"><input type="checkbox" name="neckDesign" value="High Neck"> High Neck</label>
+                </div>
+            </div>
+
+            <!-- Color -->
+            <div class="filter-group">
+                <div class="filter-group-title">Color</div>
+                <div class="filter-options">
+                    <label class="filter-option"><input type="checkbox" name="color" value="Red"> Red</label>
+                    <label class="filter-option"><input type="checkbox" name="color" value="Green"> Green</label>
+                    <label class="filter-option"><input type="checkbox" name="color" value="Blue"> Blue</label>
+                    <label class="filter-option"><input type="checkbox" name="color" value="Pink"> Pink</label>
+                    <label class="filter-option"><input type="checkbox" name="color" value="Gold"> Gold</label>
+                    <label class="filter-option"><input type="checkbox" name="color" value="Black"> Black</label>
+                </div>
+            </div>
+        </div>
+        <div class="filter-footer">
+            <button class="filter-btn clear-btn" onclick="clearFilters('boutique')">Clear Filters</button>
+            <button class="filter-btn apply-btn" onclick="applyFilters('boutique')">Apply Filters</button>
+        </div>
+    </div>
+
+    <a href="https://wa.me/919688561269?text=Hi%20Aari%20Elegance,%20I%20have%20an%20inquiry" target="_blank" class="whatsapp-float">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <!-- Universal Footer -->
+    <footer class="footer-extended">
+        <div class="footer-top">
+            <div class="footer-col" id="footer-contact">
+                <h3>SRI & SAI AARI FASHION</h3>
+                <p>Enhancing your natural beauty with professional care and premium products. Your one-stop destination for all fashion needs.</p>
+                <a href="mailto:srisaiaariedesigner17@gmail.com" class="contact-highlight">Mail us - srisaiaariedesigner17@gmail.com</a><br>
+                <a href="tel:+919688561269" class="contact-highlight">Customer Care - +91 9688561269</a>
+            </div>
+            <div class="footer-col">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="products.html">Shop Designs</a></li>
+                    <li><a href="training.html">Professional Training</a></li>
+                    <li><a href="account.html">My Account</a></li>
+
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Policies</h3>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms and Conditions</a></li>
+                    <li><a href="#">Shipping Policy</a></li>
+                    <li><a href="#">Cancellation and Refund</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h3>Location</h3>
+                <p>Hospital Street,<br>
+                    Mega Hyper Mall Opposite,<br>
+                    Thiruthuraipoondi - 614 713</p>
+                <h3 style="margin-top: 20px;">Timing</h3>
+                <p>10:00 AM to 9:00 PM<br>(Monday to Saturday)</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Sri & Sai Aari Fashion & Academy. All Rights Reserved.</p>
+            <div class="footer-socials">
+                <a href="https://www.facebook.com/share/1CSZWAPEJn/" target="_blank"><i class="fab fa-facebook-f"></i></a>
+                <a href="https://www.instagram.com/sri_saiaari_designer?igsh=MXAyMzZhcWxkbXVtNQ==" target="_blank"><i class="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@srisaiaaridesigner1065"><i class="fab fa-youtube"></i></a>
+
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/products.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             if (typeof loadProducts === 'function') {
+                loadProducts({ type: 'boutique' });
+            }
+        });
+    </script>
+</body>
+</html>

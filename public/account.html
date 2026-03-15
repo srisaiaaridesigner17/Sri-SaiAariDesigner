@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Account | Sri & Sai Aari Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Account Layout */
+        .account-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            padding: 30px 0;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        /* Sidebar */
+        .account-sidebar {
+            background: linear-gradient(135deg, var(--primary-color), #8b1a3a);
+            border-radius: 16px;
+            padding: 25px 20px;
+            color: white;
+            flex: 1 1 280px;
+            max-width: 100%;
+            height: fit-content;
+        }
+        .sidebar-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .profile-avatar-sidebar {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: rgba(255,255,255,0.2);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid rgba(255,255,255,0.5);
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .profile-avatar-sidebar img { width: 100%; height: 100%; object-fit: cover; }
+        .sidebar-user-info { flex: 1; min-width: 0; }
+        .profile-name { font-size: 1.1rem; font-weight: 700; margin-bottom: 2px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+        .profile-email { font-size: 0.8rem; opacity: 0.8; word-break: break-all; }
+        .sidebar-nav { list-style: none; }
+        .sidebar-nav li { margin-bottom: 5px; }
+        .sidebar-nav a {
+            display: flex; align-items: center; gap: 12px;
+            padding: 12px 15px; border-radius: 8px;
+            color: rgba(255,255,255,0.85); text-decoration: none;
+            font-weight: 500; transition: all 0.3s;
+        }
+        .sidebar-nav a:hover, .sidebar-nav a.active { background: rgba(255,255,255,0.15); color: white; }
+        .sidebar-nav a i { width: 20px; text-align: center; }
+        .logout-btn {
+            width: 100%; margin-top: 15px; padding: 10px;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: white; border-radius: 8px; cursor: pointer; font-weight: 600;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.3s; font-size: 0.9rem;
+        }
+        .logout-btn:hover { background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4); }
+
+        /* Main Content */
+        .account-main { flex: 2 1 500px; min-width: 0; display: flex; flex-direction: column; gap: 20px; max-width: 100%; }
+        .account-panel {
+            background: #fff; border-radius: 16px; padding: 30px;
+            box-shadow: 0 2px 15px rgba(0,0,0,0.06); display: none;
+        }
+        .account-panel.active { display: block; }
+        .panel-title {
+            font-size: 1.4rem; font-weight: 700; color: #212121;
+            border-bottom: 2px solid var(--secondary-color); padding-bottom: 12px; margin-bottom: 25px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .panel-title i { color: var(--primary-color); }
+
+        /* Profile Info */
+        .profile-card-header {
+            background: linear-gradient(135deg, var(--primary-color), #8b1a3a);
+            margin: -30px -30px 25px -30px;
+            padding: 40px 30px;
+            border-radius: 16px 16px 0 0;
+            color: white;
+            text-align: center;
+        }
+        .profile-card-header h2 { margin: 0; font-size: 1.5rem; font-family: 'Playfair Display', serif; }
+        .profile-stats {
+            display: flex; justify-content: center; gap: 40px; margin-top: 20px;
+        }
+        .stat-item { text-align: center; }
+        .stat-value { display: block; font-size: 1.4rem; font-weight: 700; color: #fff; }
+        .stat-label { font-size: 0.7rem; opacity: 0.9; text-transform: uppercase; letter-spacing: 1px; }
+
+        .profile-info-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
+            gap: 20px; 
+        }
+        .info-card {
+            background: #fff;
+            border: 1px solid #f0f0f0;
+            padding: 20px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+        }
+        .info-card:hover { 
+            transform: translateY(-5px); 
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+            border-color: var(--secondary-color);
+        }
+        .info-card-icon {
+            width: 50px; height: 50px;
+            background: var(--secondary-color);
+            color: var(--primary-color);
+            border-radius: 12px;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+        .info-card-content { flex: 1; min-width: 0; }
+        .info-card-content label { font-size: 0.7rem; color: #999; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; display: block; margin-bottom: 4px; }
+        .info-card-content p { font-size: 1rem; color: #333; font-weight: 600; margin: 0; word-break: break-all; }
+
+        /* Orders */
+        .order-card { border: 1px solid #eee; border-radius: 12px; overflow: hidden; margin-bottom: 15px; }
+        .order-header {
+            background: #f9f9f9; padding: 15px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .order-id { font-weight: 700; color: #333; font-size: 0.9rem; }
+        .order-body { padding: 15px 20px; }
+        .order-total { font-weight: 700; color: var(--primary-color); margin-top: 10px; }
+
+        /* Wishlist */
+        .wishlist-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 20px; }
+        .wishlist-item { border: 1px solid #eee; padding: 15px; border-radius: 12px; text-align: center; position: relative; }
+        .wishlist-item img { width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; }
+
+        /* Guest Prompt */
+        .guest-prompt { text-align: center; padding: 80px 20px; }
+        .guest-prompt i { font-size: 4rem; color: #ccc; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo">
+              <img src="./images/sri-logo2.png" alt="Sri & Sai Aari Fashion" class="logo-img">
+                Sri & Sai Aari Fashion
+            </a>
+            <nav class="nav-links">
+                <a href="index.html" title="Home">
+                    <i class="fas fa-house"></i>
+                    <span class="nav-text">Home</span>
+                </a>
+                <a href="products.html" title="Shop Designs">
+                    <i class="fas fa-store"></i>
+                    <span class="nav-text">Shop Designs</span>
+                </a>
+                <a href="training.html" title="Professional Training">
+                    <i class="fas fa-graduation-cap"></i>
+                    <span class="nav-text">Training</span>
+                </a>
+                <a href="about.html" title="About">
+                    <i class="fas fa-circle-info"></i>
+                    <span class="nav-text">About</span>
+                </a>
+                <a href="account.html" title="Account" style="color: var(--primary-color)">
+                    <i class="fas fa-user"></i>
+                    <span class="nav-text">Account</span>
+                </a>
+            </nav>
+            <div class="nav-icons">
+                <a href="cart.html" class="cart-icon">
+                    <i class="fas fa-shopping-bag"></i>
+                    <span class="cart-count" id="cart-count">0</span>
+                </a>
+                <button class="hamburger" id="hamburger">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <section class="container">
+        <!-- Guest View -->
+        <div id="guest-view" style="display:none;">
+            <div class="guest-prompt">
+                <i class="fas fa-user-lock"></i>
+                <h2>Please Sign In</h2>
+                <p>Log in or create an account to view your profile.</p>
+                <div style="margin-top: 20px;">
+                    <a href="login.html" class="btn">Login / Sign Up</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Authenticated View -->
+        <div id="auth-view" style="display:none;">
+            <div class="account-layout">
+                <aside class="account-sidebar">
+                    <div class="sidebar-header">
+                        <div class="profile-avatar-sidebar" id="sidebar-avatar">
+                            <i class="fas fa-user"></i>
+                        </div>
+                        <div class="sidebar-user-info">
+                            <h3 id="sidebar-name">Loading...</h3>
+                            <p id="sidebar-email">-</p>
+                        </div>
+                    </div>
+                    <ul class="sidebar-nav">
+                        <li><a href="#" onclick="switchPanel('profile')" id="nav-profile" class="active"><i class="fas fa-id-card"></i> Profile</a></li>
+                        <li><a href="#" onclick="switchPanel('orders')" id="nav-orders"><i class="fas fa-box"></i> Orders</a></li>
+                        <li><a href="#" onclick="switchPanel('wishlist')" id="nav-wishlist"><i class="fas fa-heart"></i> Wishlist</a></li>
+                    </ul>
+                    <button class="logout-btn" onclick="logout()">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                </aside>
+
+                <main class="account-main">
+                    <!-- Profile Panel -->
+                    <div class="account-panel active" id="panel-profile">
+                        <div class="profile-card-header">
+                            <h2><i class="fas fa-user-circle"></i> Personal Profile</h2>
+                            <div class="profile-stats">
+                                <div class="stat-item"><span class="stat-value" id="stat-cart">0</span><span class="stat-label">Cart Items</span></div>
+                                <div class="stat-item"><span class="stat-value" id="stat-wish">0</span><span class="stat-label">Wishlist</span></div>
+                                <div class="stat-item"><span class="stat-value" id="stat-orders">0</span><span class="stat-label">Orders</span></div>
+                            </div>
+                        </div>
+                        
+                        <div id="profile-display">
+                            <div class="profile-info-grid">
+                                <div class="info-card">
+                                    <div class="info-card-icon"><i class="fas fa-signature"></i></div>
+                                    <div class="info-card-content">
+                                        <label>Full Name</label>
+                                        <p id="info-name">-</p>
+                                    </div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card-icon"><i class="fas fa-envelope-open-text"></i></div>
+                                    <div class="info-card-content">
+                                        <label>Email Address</label>
+                                        <p id="info-email">-</p>
+                                    </div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card-icon"><i class="fas fa-phone-volume"></i></div>
+                                    <div class="info-card-content">
+                                        <label>Phone Number</label>
+                                        <p id="info-phone">-</p>
+                                    </div>
+                                </div>
+                                <div class="info-card">
+                                    <div class="info-card-icon"><i class="fas fa-shield-alt"></i></div>
+                                    <div class="info-card-content">
+                                        <label>Account Type</label>
+                                        <p id="info-role" style="text-transform: capitalize;">-</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="margin-top: 30px; text-align: center;">
+                                <button class="btn btn-outline" onclick="toggleEditProfile(true)" style="padding: 10px 30px; border-radius: 50px;">
+                                    <i class="fas fa-user-edit"></i> Edit Profile Info
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Edit Form -->
+                        <div id="profile-edit" style="display: none;">
+                            <div class="panel-title"><span><i class="fas fa-edit"></i> Edit Your Details</span></div>
+                            <form id="edit-profile-form" onsubmit="updateProfile(event)">
+                                <div class="profile-info-grid">
+                                    <div class="info-card" style="display: block;">
+                                        <label style="font-size: 0.7rem; color: #999; font-weight: 600; text-transform: uppercase;">Full Name</label>
+                                        <input type="text" id="edit-name" class="form-input" style="width:100%; padding:12px; border-radius:8px; border:1px solid #ddd; margin-top:5px; font-family:inherit;" required>
+                                    </div>
+                                    <div class="info-card" style="display: block;">
+                                        <label style="font-size: 0.7rem; color: #999; font-weight: 600; text-transform: uppercase;">Phone Number</label>
+                                        <input type="tel" id="edit-phone" class="form-input" style="width:100%; padding:12px; border-radius:8px; border:1px solid #ddd; margin-top:5px; font-family:inherit;">
+                                    </div>
+                                </div>
+                                <div style="margin-top: 30px; display: flex; gap: 15px; justify-content: center;">
+                                    <button type="submit" class="btn" style="padding: 12px 30px; border-radius: 50px;">Save Changes</button>
+                                    <button type="button" class="btn" style="background: #666; padding: 12px 30px; border-radius: 50px;" onclick="toggleEditProfile(false)">Cancel</button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                    <!-- Orders Panel -->
+                    <div class="account-panel" id="panel-orders">
+                        <h2 class="panel-title"><span><i class="fas fa-box"></i> My Orders</span></h2>
+                        <div id="orders-list"><p>Loading orders...</p></div>
+                    </div>
+
+                    <!-- Wishlist Panel -->
+                    <div class="account-panel" id="panel-wishlist">
+                        <h2 class="panel-title"><span><i class="fas fa-heart"></i> Wishlist</span></h2>
+                        <div id="wishlist-grid" class="wishlist-grid"><p>Your wishlist is empty.</p></div>
+                    </div>
+                </main>
+            </div>
+        </div>
+    </section>
+
+    <script src="js/api.js"></script>
+    <script src="js/main.js"></script>
+    <script>
+        function switchPanel(name) {
+            document.querySelectorAll('.account-panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.sidebar-nav a').forEach(a => a.classList.remove('active'));
+            document.getElementById('panel-' + name).classList.add('active');
+            document.getElementById('nav-' + name).classList.add('active');
+        }
+
+        function logout() {
+            localStorage.removeItem('user');
+            localStorage.removeItem('userToken');
+            localStorage.removeItem('cart');
+            localStorage.removeItem('wishlist');
+            window.location.href = 'index.html';
+        }
+
+        function toggleEditProfile(editing) {
+            document.getElementById('profile-display').style.display = editing ? 'none' : 'grid';
+            document.getElementById('profile-edit').style.display = editing ? 'block' : 'none';
+            
+            if (editing) {
+                const user = JSON.parse(localStorage.getItem('user'));
+                document.getElementById('edit-name').value = user.name || '';
+                document.getElementById('edit-phone').value = user.phone || '';
+            }
+        }
+
+        async function updateProfile(e) {
+            e.preventDefault();
+            const user = JSON.parse(localStorage.getItem('user'));
+            const newData = {
+                name: document.getElementById('edit-name').value,
+                phone: document.getElementById('edit-phone').value
+            };
+
+            try {
+                const res = await window.api.updateProfile(user.id, newData);
+                if (res.user) {
+                    localStorage.setItem('user', JSON.stringify(res.user));
+                    loadAccount(); // Refresh UI
+                    toggleEditProfile(false);
+                    if (typeof showToast === 'function') showToast('Profile updated successfully');
+                }
+            } catch (err) {
+                console.error(err);
+                if (typeof showToast === 'function') showToast('Failed to update profile', 'error');
+            }
+        }
+
+        async function loadAccount() {
+            const userStr = localStorage.getItem('user');
+            if (!userStr) {
+                document.getElementById('guest-view').style.display = 'block';
+                return;
+            }
+
+            let user = JSON.parse(userStr);
+            document.getElementById('auth-view').style.display = 'block';
+            
+            // Fetch fresh profile data
+            try {
+                const profileRes = await window.api.getProfile(user.id);
+                if (profileRes.user) {
+                    user = profileRes.user;
+                    localStorage.setItem('user', JSON.stringify(user));
+                    
+                    // Sync remote data to local storage if newer
+                    if (user.cart) localStorage.setItem('cart', JSON.stringify(user.cart));
+                    if (user.wishlist) localStorage.setItem('wishlist', JSON.stringify(user.wishlist));
+                    if (typeof updateCartCount === 'function') updateCartCount();
+                    if (typeof updateNavProfile === 'function') updateNavProfile();
+                }
+            } catch (e) { console.warn("Could not refresh profile", e); }
+
+            // Fill profile
+            document.getElementById('sidebar-name').innerText = user.name || 'User';
+            document.getElementById('sidebar-email').innerText = user.email || '-';
+            document.getElementById('info-name').innerText = user.name || '-';
+            document.getElementById('info-email').innerText = user.email || '-';
+            document.getElementById('info-phone').innerText = user.phone || 'Not set';
+            document.getElementById('info-role').innerText = user.role || 'Customer';
+
+            // Stats
+            document.getElementById('stat-cart').innerText = (JSON.parse(localStorage.getItem('cart')) || []).length;
+            document.getElementById('stat-wish').innerText = (JSON.parse(localStorage.getItem('wishlist')) || []).length;
+
+            if (user.profileImage) {
+                document.getElementById('sidebar-avatar').innerHTML = `<img src="${user.profileImage}" alt="">`;
+            } else if (typeof getInitials === 'function') {
+                document.getElementById('sidebar-avatar').innerHTML = getInitials(user.name);
+                document.getElementById('sidebar-avatar').style.display = 'flex';
+                document.getElementById('sidebar-avatar').style.color = 'white';
+                document.getElementById('sidebar-avatar').style.fontWeight = '700';
+            }
+
+            // Load Orders
+            try {
+                const userOrders = await window.api.getUserOrders(user.id);
+                document.getElementById('stat-orders').innerText = (userOrders || []).length;
+                const list = document.getElementById('orders-list');
+                if (!userOrders || userOrders.length === 0) {
+                    list.innerHTML = '<p>You haven\'t placed any orders yet.</p>';
+                } else {
+                    list.innerHTML = userOrders.map(o => `
+                        <div class="order-card">
+                            <div class="order-header">
+                                <span class="order-id">ID: ${o._id.substring(0,8).toUpperCase()}...</span>
+                                <span>${new Date(o.createdAt).toLocaleDateString()}</span>
+                            </div>
+                            <div class="order-body">
+                                <p style="margin-bottom: 5px;">Status: <span class="status-badge" style="background: #f0f0f0; padding: 2px 8px; border-radius: 4px; font-weight: 600;">${o.orderStatus}</span></p>
+                                <p class="order-total">Total: ₹${o.totalAmount}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                }
+            } catch (err) {
+                document.getElementById('orders-list').innerHTML = '<p>Error loading orders.</p>';
+            }
+
+            // Load Wishlist
+            const wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
+            const wishGrid = document.getElementById('wishlist-grid');
+            if (wishlist.length === 0) {
+                wishGrid.innerHTML = '<p>Your wishlist is empty.</p>';
+            } else {
+                wishGrid.innerHTML = wishlist.map(item => `
+                    <div class="wishlist-item" style="border: 1px solid #eee; padding: 15px; border-radius: 12px; text-align: center;">
+                        <img src="${item.image}" alt="" style="width: 100%; height: 140px; object-fit: cover; border-radius: 8px; margin-bottom: 10px;">
+                        <h4 style="font-size: 0.95rem; margin-bottom: 5px;">${item.name}</h4>
+                        <p style="color: var(--primary-color); font-weight: bold; margin-bottom: 10px;">₹${item.price}</p>
+                        <a href="product.html?id=${item._id}" class="btn" style="padding: 5px 10px; font-size: 0.8rem; display: block;">View</a>
+                    </div>
+                `).join('');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadAccount);
+    </script>
+</body>
+</html>

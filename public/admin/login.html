@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Authentication | Sri & Sai Aari Fashion</title>
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-login.css">
+    <link rel="icon" type="image/png" href="../images/sri-logo2.png">
+</head>
+<body>
+
+    <div class="auth-wrapper">
+        <div class="auth-card">
+            <div class="auth-header">
+                <img src="../images/sri-logo2.png" alt="Sri & Sai Aari Fashion" class="auth-logo">
+                <h1>Sri & Sai Aari Fashion</h1>
+                <p class="subtitle" id="auth-subtitle">Welcome back! Please login to your account.</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-section" class="auth-section">
+                <form id="admin-login-form" autocomplete="off">
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="email" required placeholder="admin@aarielegance.com" autocomplete="off">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <div class="input-icon">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" id="password" required placeholder="••••••••" autocomplete="new-password">
+                        </div>
+                    </div>
+                    <div class="form-footer">
+                        <a href="#" class="forgot-link" onclick="showSection('forgot')">Forgot Password?</a>
+                    </div>
+                    <button type="submit" class="auth-btn primary-btn">Login</button>
+                    
+                    <div class="divider">
+                        <span>OR</span>
+                    </div>
+
+                    <button type="button" class="auth-btn google-btn" onclick="handleGoogleSignIn()">
+                        <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" alt="Google">
+                        Sign in with Google
+                    </button>
+                </form>
+            </div>
+
+            <!-- Forgot Password Form -->
+            <div id="forgot-section" class="auth-section" style="display: none;">
+                <p class="instruction-text">Enter your email address and we'll send you a link to reset your password.</p>
+                <form id="admin-forgot-form">
+                    <div class="form-group">
+                        <label for="forgot-email">Email Address</label>
+                        <div class="input-icon">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" id="forgot-email" required placeholder="you@example.com">
+                        </div>
+                    </div>
+                    <button type="submit" class="auth-btn primary-btn">Send Reset Link</button>
+                </form>
+                <p class="switch-text">Back to <a href="#" onclick="showSection('login')">Login</a></p>
+            </div>
+
+            <p id="auth-error" class="error-msg" style="display: none;"></p>
+            <p id="auth-success" class="success-msg" style="display: none;"></p>
+        </div>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+    
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <script>
+        // FIREBASE CONFIGURATION
+        const firebaseConfig = {
+            apiKey: "AIzaSyCx2Yf8Z-jbv7EfI9TGTDgykOkuKf5gQuo",
+            authDomain: "aari-web.firebaseapp.com",
+            projectId: "aari-web",
+            storageBucket: "aari-web.firebasestorage.app",
+            messagingSenderId: "600521359508",
+            appId: "1:600521359508:web:9fbd19e3fd1af6103c3481",
+            measurementId: "G-YFXY0MN7TQ"
+        };
+
+        // Initialize Firebase
+        if (!firebase.apps.length) {
+            firebase.initializeApp(firebaseConfig);
+        }
+        const auth = firebase.auth();
+        const googleProvider = new firebase.auth.GoogleAuthProvider();
+
+        async function handleGoogleSignIn() {
+            try {
+                const result = await auth.signInWithPopup(googleProvider);
+                const user = result.user;
+                
+                const googleData = {
+                    name: user.displayName,
+                    email: user.email,
+                    googleId: user.uid,
+                    profileImage: user.photoURL
+                };
+
+                const res = await window.api.googleLogin(googleData);
+                if (res.user) {
+                    if (res.user.role === 'admin') {
+                        localStorage.setItem('userToken', 'admin-token-' + Date.now()); 
+                        localStorage.setItem('user', JSON.stringify(res.user));
+                        showAuthMessage('success', 'Admin login successful! Redirecting...');
+                        setTimeout(() => {
+                            window.location.href = 'dashboard.html';
+                        }, 1000);
+                    } else {
+                        showAuthMessage('error', 'Access denied. You do not have admin privileges.');
+                    }
+                } else {
+                    showAuthMessage('error', 'Google login failed on server.');
+                }
+            } catch (error) {
+                console.error("Google Auth Error:", error);
+                showAuthMessage('error', error.message);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+        });
+    </script>
+</body>
+</html>

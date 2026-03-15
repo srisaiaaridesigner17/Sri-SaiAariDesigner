@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Sri & Sai Aari Fashion</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Playfair+Display:ital,wght@0,600;1,600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link rel="icon" type="image/png" href="../images/sri-logo2.png">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul style="list-style: none;">
+                <li><a href="dashboard.html" class="active"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="add-product.html"><i class="fas fa-plus"></i> Add Product</a></li>
+                <li><a href="manage-boutique.html"><i class="fas fa-tshirt"></i> Manage Boutique</a></li>
+                <li><a href="manage-parlour.html"><i class="fas fa-spa"></i> Manage Beauty Parlour</a></li>
+                <li><a href="manage-slider.html"><i class="fas fa-images"></i> Manage Slider</a></li>
+                <li><a href="manage-courses.html"><i class="fas fa-graduation-cap"></i> Manage Courses</a></li>
+                <li><a href="../index.html"><i class="fas fa-home"></i> Go to Home Page</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="section-title" style="text-align: left;">Dashboard Overview</h1>
+            
+            <div class="dashboard-stats">
+                <div class="stat-card">
+                    <h3>Total Products</h3>
+                    <p id="total-products">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Orders</h3>
+                    <p id="total-orders">0</p>
+                </div>
+                <div class="stat-card">
+                    <h3>Pending Orders</h3>
+                    <p id="pending-orders">0</p>
+                </div>
+            </div>
+
+            <div class="admin-card">
+                <h3>Recent Orders</h3>
+                <div style="overflow-x: auto;">
+                    <table class="admin-table" id="recent-orders-table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody id="recent-orders-body">
+                            <tr><td colspan="5">Loading...</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+             checkAuth();
+             loadDashboardData();
+        });
+    </script>
+</body>
+</html>

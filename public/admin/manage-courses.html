@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Courses | Sri & Sai Aari Fashion Admin</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/admin-dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .preview-box {
+            width: 100%;
+            max-width: 400px;
+            aspect-ratio: 16/9;
+            background: #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+        .preview-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .course-item {
+            background: #fff;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar">
+            <h2>Admin Panel</h2>
+            <ul style="list-style: none;">
+                <li><a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a></li>
+                <li><a href="orders.html"><i class="fas fa-shopping-cart"></i> Orders</a></li>
+                <li><a href="add-product.html"><i class="fas fa-plus"></i> Add Product</a></li>
+                <li><a href="manage-boutique.html"><i class="fas fa-tshirt"></i> Manage Boutique</a></li>
+                <li><a href="manage-parlour.html"><i class="fas fa-spa"></i> Manage Beauty Parlour</a></li>
+                <li><a href="manage-slider.html"><i class="fas fa-images"></i> Manage Slider</a></li>
+                <li><a href="manage-courses.html" class="active"><i class="fas fa-graduation-cap"></i> Manage Courses</a></li>
+                <li><a href="../index.html"><i class="fas fa-home"></i> Go to Home Page</a></li>
+                <li><a href="#" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-content">
+            <h1 class="section-title" style="text-align: left;">Manage Professional Training</h1>
+            
+            <div class="admin-card">
+                <h3>Add New Course</h3>
+                <form id="course-form">
+                    <div class="form-group">
+                        <label>Course Title</label>
+                        <input type="text" id="course-title-input" required placeholder="e.g. Aari Embroidery Basic to Advanced">
+                    </div>
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea id="course-desc-input" rows="3" required placeholder="Describe the course content..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" id="course-price-input" placeholder="e.g. 5000">
+                    </div>
+                    <div class="form-group">
+                        <label>Duration</label>
+                        <input type="text" id="course-duration-input" placeholder="e.g. 3 Months">
+                    </div>
+                    <div class="form-group">
+                        <label>Banner Image</label>
+                        <input type="file" id="course-file" accept="image/*">
+                    </div>
+                    <div id="course-preview-container" class="preview-box">
+                        <p style="text-align: center; line-height: 150px; color: #888;">Image preview</p>
+                    </div>
+                    
+                    <button type="submit" class="btn" style="margin-top: 20px;">Add Course</button>
+                    <div id="status-msg" style="margin-top: 15px;"></div>
+                </form>
+            </div>
+
+            <div class="admin-card">
+                <h3>Current Courses</h3>
+                <div id="courses-list">
+                    <!-- Courses loaded here -->
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="../js/api.js"></script>
+    <script src="../js/admin.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            checkAuth();
+            loadCourses();
+
+            const fileInput = document.getElementById('course-file');
+            fileInput.addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                if (!file) return;
+                const preview = document.getElementById('course-preview-container');
+                preview.innerHTML = `<img src="${URL.createObjectURL(file)}">`;
+            });
+
+            document.getElementById('course-form').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const status = document.getElementById('status-msg');
+                status.innerHTML = '<p style="color: blue;">Adding course...</p>';
+
+                const formData = new FormData();
+                formData.append('title', document.getElementById('course-title-input').value);
+                formData.append('description', document.getElementById('course-desc-input').value);
+                formData.append('price', document.getElementById('course-price-input').value);
+                formData.append('duration', document.getElementById('course-duration-input').value);
+                
+                const file = document.getElementById('course-file').files[0];
+                if (file) formData.append('image', file);
+
+                try {
+                    await window.api.addCourse(formData);
+                    status.innerHTML = '<p style="color: green;">✅ Course added successfully!</p>';
+                    document.getElementById('course-form').reset();
+                    document.getElementById('course-preview-container').innerHTML = '';
+                    loadCourses();
+                    setTimeout(() => status.innerHTML = '', 3000);
+                } catch (err) {
+                    status.innerHTML = '<p style="color: red;">❌ Failed to add course.</p>';
+                }
+            });
+        });
+
+        async function loadCourses() {
+            if (!window.api) return;
+            try {
+                const courses = await window.api.getCourses();
+                const list = document.getElementById('courses-list');
+                
+                if (!courses || courses.length === 0) {
+                    list.innerHTML = '<p style="color: #888; text-align: center; padding: 20px;">No courses found.</p>';
+                    return;
+                }
+
+                list.innerHTML = courses.map(course => `
+                    <div class="course-item">
+                        <div>
+                            <strong>${course.title}</strong><br>
+                            <small>${course.duration || 'N/A'} • ₹${course.price || 0}</small>
+                        </div>
+                        <button onclick="handleDeleteCourse('${course._id}')" class="btn" style="background: #e54c4c; padding: 5px 10px; font-size: 0.8rem;">Delete</button>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.error(err);
+            }
+        }
+
+        window.handleDeleteCourse = async (id) => {
+            if (!confirm('Delete this course?')) return;
+            try {
+                await window.api.deleteCourse(id);
+                loadCourses();
+            } catch (err) {
+                alert('Error deleting course');
+            }
+        };
+    </script>
+</body>
+</html>
