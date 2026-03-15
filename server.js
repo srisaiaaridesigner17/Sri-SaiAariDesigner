@@ -216,8 +216,11 @@ app.post('/api/auth/forgot-password', async (req, res) => {
         const transporter = nodemailer.createTransport({
             host: 'smtp.gmail.com',
             port: 587,
-            secure: false, // false for port 587
-            family: 4,     // Force IPv4
+            secure: false,
+            // FORCE IPv4 (Important for Render network bypass)
+            lookup: (hostname, options, callback) => {
+                dns.lookup(hostname, { family: 4 }, callback);
+            },
             auth: {
                 user: process.env.EMAIL_USER,
                 pass: process.env.EMAIL_PASS
@@ -232,12 +235,27 @@ app.post('/api/auth/forgot-password', async (req, res) => {
 
         const mailOptions = {
             to: user.email,
-            from: process.env.EMAIL_USER,
-            subject: 'Password Reset | Sri & Sai Aari Fashion',
-            text: `You are receiving this because you (or someone else) have requested the reset of the password for your account.\n\n` +
-                `Please click on the following link, or paste this into your browser to complete the process:\n\n` +
-                `${resetUrl}\n\n` +
-                `If you did not request this, please ignore this email and your password will remain unchanged.\n`
+            from: `"Sri & Sai Aari Fashion" <${process.env.EMAIL_USER}>`,
+            subject: 'Password Reset Request',
+            html: `
+                <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; border: 1px solid #f0f0f0; border-radius: 12px; background-color: #ffffff; overflow: hidden;">
+                    <div style="background-color: #d4a373; padding: 30px; text-align: center;">
+                        <h1 style="color: white; margin: 0;">Sri & Sai Aari Fashion</h1>
+                    </div>
+                    <div style="padding: 30px; background-color: #fdfaf7;">
+                        <h2 style="color: #333; margin-top: 0;">Reset Your Password</h2>
+                        <p style="color: #555; line-height: 1.6;">Hello,</p>
+                        <p style="color: #555; line-height: 1.6;">We received a request to reset the password for your account. Click the button below to secure your account:</p>
+                        <div style="text-align: center; margin: 35px 0;">
+                            <a href="${resetUrl}" style="background-color: #d4a373; color: white; padding: 16px 35px; text-decoration: none; border-radius: 8px; font-weight: bold; display: inline-block; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">Update My Password</a>
+                        </div>
+                        <p style="color: #888; font-size: 0.9rem;">This link expires in 1 hour. If you didn't request this, no action is needed.</p>
+                    </div>
+                    <div style="text-align: center; padding: 20px; color: #aaa; font-size: 0.8rem; border-top: 1px solid #f0f0f0;">
+                        <p>© 2024 Sri & Sai Aari Fashion & Academy<br>Tamil Nadu, India</p>
+                    </div>
+                </div>
+            `
         };
 
         await transporter.sendMail(mailOptions);

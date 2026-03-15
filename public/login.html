@@ -449,19 +449,17 @@
                 btn.innerText = 'Sending...';
                 btn.disabled = true;
 
-                // Use Firebase to send reset link instead of custom server SMTP
-                await auth.sendPasswordResetEmail(email);
+                // Call our server API (Sends from your official Gmail for better inbox delivery)
+                const res = await window.api.forgotPassword(email);
 
-                showMessage('forgot-msg', 'Firebase reset link sent! Please check your email inbox.', 'success');
-            } catch (err) {
-                console.error("Firebase Reset Error:", err);
-                let errorMsg = 'Failed to send reset link.';
-                if (err.code === 'auth/user-not-found') {
-                    errorMsg = 'No user found with this email address.';
-                } else if (err.code === 'auth/invalid-email') {
-                    errorMsg = 'Please enter a valid email address.';
+                if (res.message.includes('successfully')) {
+                    showMessage('forgot-msg', 'Reset link sent! Please check your official Inbox.', 'success');
+                } else {
+                    showMessage('forgot-msg', res.message || 'Failed to send reset link', 'error');
                 }
-                showMessage('forgot-msg', errorMsg, 'error');
+            } catch (err) {
+                console.error("Server Reset Error:", err);
+                showMessage('forgot-msg', 'Server is temporarily busy. Please try again.', 'error');
             } finally {
                 btn.innerText = originalText;
                 btn.disabled = false;
