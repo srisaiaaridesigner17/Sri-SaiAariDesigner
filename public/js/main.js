@@ -390,13 +390,15 @@ function renderSlides(slider, dotsContainer, slides) {
         const url = slide.image || slide.url;
         const isVideo = url && (url.match(/\.(mp4|mov|avi|wmv)/i) || url.includes('/video/upload/'));
         if (isVideo) {
-            return `<video src="${url}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0;" autoplay loop muted playsinline></video>`;
+            // Note: REMOVED 'loop' so we can catch the 'ended' event
+            return `<video src="${url}" style="width:100%; height:100%; object-fit:cover; flex-shrink:0;" autoplay muted playsinline></video>`;
         }
         return `<img src="${url}" alt="Promotion" style="width:100%; height:100%; object-fit:cover; flex-shrink:0;">`;
     }).join('');
 
     const slideCount = slides.length;
     let currentSlide = 0;
+    let slideTimeout = null;
     dotsContainer.innerHTML = '';
 
     if (slideCount <= 1) return;
@@ -407,35 +409,44 @@ function renderSlides(slider, dotsContainer, slides) {
         if (i === 0) dot.classList.add('active');
         dot.addEventListener('click', () => {
             goToSlide(i);
-            startAutoSlide();
         });
         dotsContainer.appendChild(dot);
     }
 
     const dots = dotsContainer.querySelectorAll('.dot');
+    const mediaElements = Array.from(slider.children);
 
     function goToSlide(n) {
+        // Clear previous timers and listeners
+        if (slideTimeout) clearTimeout(slideTimeout);
+        mediaElements.forEach(el => {
+            if (el.tagName === 'VIDEO') el.onended = null;
+        });
+
         currentSlide = (n + slideCount) % slideCount;
         slider.style.transition = 'transform 0.6s cubic-bezier(0.4, 0, 0.2, 1)';
         slider.style.transform = `translateX(-${currentSlide * 100}%)`;
         dots.forEach(d => d.classList.remove('active'));
         if (dots[currentSlide]) dots[currentSlide].classList.add('active');
+
+        // Logic based on media type
+        const currentMedia = mediaElements[currentSlide];
+        if (currentMedia.tagName === 'VIDEO') {
+            currentMedia.currentTime = 0;
+            currentMedia.play().catch(() => {});
+            currentMedia.onended = () => {
+                goToSlide(currentSlide + 1);
+            };
+        } else {
+            // Images stay for 3 seconds
+            slideTimeout = setTimeout(() => {
+                goToSlide(currentSlide + 1);
+            }, 3000);
+        }
     }
 
-    function startAutoSlide() {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(() => {
-            goToSlide(currentSlide + 1);
-        }, 3000);
-    }
-
-    let slideInterval = setInterval(() => {
-        goToSlide(currentSlide + 1);
-    }, 3000);
-    
-    // No pause on hover to make it "completely" automatic as requested
-    // slider.addEventListener('mouseenter', () => clearInterval(slideInterval));
-    // slider.addEventListener('mouseleave', startAutoSlide);
+    // Initialize first slide
+    goToSlide(0);
 }
 
 async function initCourses() {
