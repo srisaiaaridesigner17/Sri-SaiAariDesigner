@@ -1,169 +1,5 @@
-const defaultProducts = [
-    {
-        _id: 'p3',
-        name: 'Contemporary Floral Design',
-        price: 2800,
-        image: 'https://images.unsplash.com/photo-1591369062302-3932785d115e?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Designer Aari Blouse',
-        type: 'boutique',
-        workType: 'Stone Work',
-        fabric: 'Silk',
-        neckDesign: 'Round Neck',
-        color: 'Gold',
-        description: 'Modern floral patterns with Aari embroidery suitable for party wear and contemporary sarees.',
-        stock: 8,
-        rating: 4.8,
-        reviews: 15
-    },
-    {
-        _id: 'p2',
-        name: 'Peacock Motif Silk Blouse',
-        price: 3200,
-        image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Traditional Aari Blouse',
-        type: 'boutique',
-        workType: 'Zardosi Work',
-        fabric: 'Silk',
-        neckDesign: 'V Neck',
-        color: 'Green',
-        description: 'Classic silk blouse with intricate peacock Aari embroidery on the sleeves and neckline.',
-        stock: 12,
-        rating: 4.7,
-        reviews: 18
-    },
-    {
-        _id: 'p5',
-        name: 'Simple Mango Motif',
-        price: 900,
-        image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Traditional Aari Blouse',
-        type: 'boutique',
-        workType: 'Beads Work',
-        fabric: 'Cotton',
-        neckDesign: 'Square Neck',
-        color: 'Red',
-        description: 'Understated elegance with simple traditional mango motifs, perfect for regular wear.',
-        stock: 20,
-        rating: 4.2,
-        reviews: 45
-    },
-    {
-        _id: 'p6',
-        name: 'Royal Bridal Aari Blouse',
-        price: 5500,
-        image: 'https://images.unsplash.com/photo-1617627143750-d86bc21e42bb?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Bridal Aari Blouse',
-        type: 'boutique',
-        workType: 'Zardosi Work',
-        fabric: 'Velvet',
-        neckDesign: 'High Neck',
-        color: 'Red',
-        description: 'Exquisite heavy Aari work bridal blouse featuring traditional motifs, zari, stones, and bead work.',
-        stock: 5,
-        rating: 5,
-        reviews: 24
-    },
-    {
-        _id: 'p7',
-        name: 'Modern Party Wear Blouse',
-        price: 2500,
-        image: 'https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Party Wear Blouse',
-        type: 'boutique',
-        workType: 'Mirror Work',
-        fabric: 'Net',
-        neckDesign: 'Boat Neck',
-        color: 'Pink',
-        description: 'Stunning party wear blouse with mirror work detailing.',
-        stock: 10,
-        rating: 4.6,
-        reviews: 30
-    },
-    // Materials
-    // Beauty Parlour Services/Products
-    // Beauty Parlour Services
-    {
-        _id: 's1',
-        name: 'Classic Haircut',
-        price: 450,
-        image: 'https://images.unsplash.com/photo-1560066984-138dadb4c035?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Hair Services',
-        type: 'beauty-parlour',
-        serviceType: 'Haircut',
-        concern: 'Standard',
-        duration: '45 Mins',
-        availability: 'Available Today',
-        description: 'Professional haircut and styling session tailored to your face shape.',
-        stock: 99,
-        rating: 4.8,
-        reviews: 85
-    },
-    {
-        _id: 's2',
-        name: 'Fruit Glow Facial',
-        price: 1200,
-        image: 'https://images.unsplash.com/photo-1570172619385-2da242508137?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Facial & Skin Care',
-        type: 'beauty-parlour',
-        serviceType: 'Facial',
-        concern: 'Skin Brightening',
-        duration: '60 Mins',
-        availability: 'Available Today',
-        description: 'Natural fruit-based facial for a refreshed and glowing complexion.',
-        stock: 99,
-        rating: 4.9,
-        reviews: 120
-    },
-    {
-        _id: 's3',
-        name: 'Bridal HD Makeup',
-        price: 8500,
-        image: 'https://images.unsplash.com/photo-1481325544412-f9958394917b?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Makeup Services',
-        type: 'beauty-parlour',
-        serviceType: 'Bridal Makeup',
-        concern: 'Standard',
-        duration: '3 Hours',
-        availability: 'Available This Week',
-        description: 'Long-lasting high-definition bridal makeup for your special day.',
-        stock: 99,
-        rating: 5.0,
-        reviews: 45
-    },
-    {
-        _id: 's4',
-        name: 'Anti-Dandruff Spa',
-        price: 1500,
-        image: 'https://images.unsplash.com/photo-1527799822367-a233b47b0ee6?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=80',
-        category: 'Hair Services',
-        type: 'beauty-parlour',
-        serviceType: 'Hair Treatment',
-        concern: 'Dandruff Treatment',
-        duration: '90 Mins',
-        availability: 'Weekend Slots',
-        description: 'Deep conditioning and treatment to eliminate dandruff and scalp irritation.',
-        stock: 99,
-        rating: 4.7,
-        reviews: 60
-    }
-];
-
-function initializeProducts() {
-    let storedProducts = JSON.parse(localStorage.getItem('products')) || [];
-
-    // Only add default products if they don't exist
-    defaultProducts.forEach(defaultProd => {
-        const index = storedProducts.findIndex(p => p._id === defaultProd._id);
-        if (index === -1) {
-            storedProducts.push(defaultProd);
-        } else {
-            // Update base attributes for defaults but don't overwrite user-added ones
-            storedProducts[index] = { ...defaultProd, ...storedProducts[index] };
-        }
-    });
-
-    localStorage.setItem('products', JSON.stringify(storedProducts));
-}
+// Products are now loaded exclusively from the database (admin panel).
+// No hardcoded placeholder products.
 
 async function getLocalProducts(filters = {}) {
     if (typeof filters === 'string') {
@@ -178,18 +14,17 @@ async function getLocalProducts(filters = {}) {
         }
         filters = obj;
     }
-    let dbProducts = [];
+
+    let products = [];
     if (window.api) {
         try {
-            dbProducts = await window.api.getProducts() || [];
+            products = await window.api.getProducts() || [];
         } catch (e) {
-            console.warn('API getProducts failed, using defaults', e);
+            console.warn('API getProducts failed', e);
         }
     }
-    
-    // Combine defaults and DB products
-    const dbIds = new Set(dbProducts.map(p => p._id));
-    let products = [...dbProducts, ...defaultProducts.filter(p => !dbIds.has(p._id))];
+
+
 
     if (filters.type) {
         products = products.filter(p => p.type === filters.type);
@@ -672,6 +507,8 @@ function renderProductCards(products, containerId) {
 
     container.innerHTML = products.map(product => {
         const isBeautyParlour = product.type === 'beauty-parlour';
+        const isOutOfStock = !isBeautyParlour && (product.stock === 0 || product.stock === '0');
+        const outOfStockBadge = isOutOfStock ? `<div style="position:absolute; top:10px; left:10px; background:#e54c4c; color:white; padding:5px 12px; border-radius:4px; font-size:0.8rem; font-weight:bold; z-index:2;">Out of Stock</div>` : '';
         
         if (isBeautyParlour) {
             return `
@@ -706,8 +543,9 @@ function renderProductCards(products, containerId) {
         }
 
         return `
-            <div class="product-card">
-                <a href="product.html?id=${product._id}">
+            <div class="product-card" style="position:relative;">
+                ${outOfStockBadge}
+                <a href="product.html?id=${product._id}" ${isOutOfStock ? 'style="opacity:0.6;"' : ''}>
                     ${renderMediaTag(product.image, "product-img")}
                 </a>
                 <div class="product-info">
@@ -720,13 +558,11 @@ function renderProductCards(products, containerId) {
                         <span style="color: #888; font-size: 0.8rem;">(${product.reviews || 0})</span>
                     </div>
                     <p class="product-price">₹ ${product.price}</p>
+                    ${isOutOfStock ? `<p style="color:#e54c4c; font-weight:bold; font-size:0.9rem; margin-bottom:5px;">Out of Stock</p>` : ''}
                     <div style="display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; margin-top: auto; padding-top: 15px;">
-                        <button class="btn btn-outline" style="flex: 1; padding: 10px 5px; font-size: 0.9rem;" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")}, 1, "")'>Cart</button>
-                        <button class="btn" style="flex: 1; padding: 10px 5px; font-size: 0.9rem; background-color: #ff9f00;" onclick='buyNow(${JSON.stringify(product).replace(/'/g, "&#39;")})'>Buy</button>
-                        <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'm interested in:
-*Product:* ${product.name}
-*Price:* ₹${product.price}
-*Link:* ` + window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id)}" target="_blank" class="btn" style="background-color: #25d366; color: white; padding: 10px; border: none; display: flex; align-items: center; justify-content: center; width: 45px;" title="Send to WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                        <button class="btn btn-outline" style="flex: 1; padding: 10px 5px; font-size: 0.9rem;" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")}, 1, "")' ${isOutOfStock ? 'disabled style="flex:1; padding:10px 5px; font-size:0.9rem; opacity:0.5; cursor:not-allowed;"' : ''}>Cart</button>
+                        <button class="btn" style="flex: 1; padding: 10px 5px; font-size: 0.9rem; background-color: #ff9f00;" onclick='buyNow(${JSON.stringify(product).replace(/'/g, "&#39;")})' ${isOutOfStock ? 'disabled style="flex:1; padding:10px 5px; font-size:0.9rem; background-color:#ff9f00; opacity:0.5; cursor:not-allowed;"' : ''}>Buy</button>
+                        <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'm interested in:\n*Product:* ${product.name}\n*Price:* ₹${product.price}\n*Link:* ` + window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id)}" target="_blank" class="btn" style="background-color: #25d366; color: white; padding: 10px; border: none; display: flex; align-items: center; justify-content: center; width: 45px;" title="Send to WhatsApp"><i class="fab fa-whatsapp"></i></a>
                     </div>
                 </div>
             </div>
