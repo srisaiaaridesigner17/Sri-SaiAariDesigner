@@ -373,20 +373,29 @@
 
         document.getElementById('login-form')?.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const credentials = {
-                email: document.getElementById('login-email').value,
-                password: document.getElementById('login-password').value
-            };
+            const email = document.getElementById('login-email').value;
+            const password = document.getElementById('login-password').value;
 
             try {
-                const res = await window.api.login(credentials);
+                // 1. Authenticate with Firebase first (Source of truth for passwords)
+                const fireResult = await auth.signInWithEmailAndPassword(email, password);
+                const fireUser = fireResult.user;
+
+                // 2. Fetch the full profile from your MongoDB database
+                // We use a special login endpoint that just needs the email since Firebase already verified them
+                const res = await window.api.login({ email, firebaseVerified: true });
+                
                 if (res.user) {
                     processLogin(res.user, 'login-msg');
                 } else {
-                    showMessage('login-msg', res.message || 'Invalid email or password', 'error');
+                    showMessage('login-msg', res.message || 'Account verified but profile not found', 'error');
                 }
             } catch (err) {
-                showMessage('login-msg', 'Server error. Please try again.', 'error');
+                console.error("Login Error:", err);
+                let errorMsg = 'Invalid email or password';
+                if (err.code === 'auth/user-not-found') errorMsg = 'No account found with this email.';
+                if (err.code === 'auth/wrong-password') errorMsg = 'Incorrect password.';
+                showMessage('login-msg', errorMsg, 'error');
             }
         });
 

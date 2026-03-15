@@ -80,9 +80,18 @@ app.post('/api/auth/signup', async (req, res) => {
 
 app.post('/api/auth/login', async (req, res) => {
     try {
-        const { email, password } = req.body;
-        const user = await User.findOne({ email, password });
-        if (!user) return res.status(401).json({ message: 'Invalid credentials' });
+        const { email, password, firebaseVerified } = req.body;
+        
+        let user;
+        if (firebaseVerified) {
+            // If already verified by Firebase on frontend, just get the profile
+            user = await User.findOne({ email });
+        } else {
+            // Traditional login check
+            user = await User.findOne({ email, password });
+        }
+
+        if (!user) return res.status(401).json({ message: 'Invalid credentials or account not found' });
 
         res.json({ 
             message: 'Login successful', 
