@@ -111,7 +111,6 @@ document.addEventListener('DOMContentLoaded', () => {
             message += `*Order Items:*\n`;
             checkoutItems.forEach((item, index) => {
                 message += `${index + 1}. ${item.name} x${item.qty} (₹${item.price})\n`;
-                if (item.image) message += `   Image: ${item.image}\n`;
                 if (item.customization) {
                      if (typeof item.customization === 'object') {
                          message += `   Custom: Fabric: ${item.customization.fabric || 'N/A'}, Neck: ${item.customization.neck || 'N/A'}, Sleeve: ${item.customization.sleeve || 'N/A'}, Work: ${item.customization.work || 'N/A'}\n`;
@@ -121,12 +120,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
 
-            // Add a separator and more visible link for the first item to trigger preview
-            if (checkoutItems.length > 0 && checkoutItems[0].image) {
-                message += `\n*Product Image Preview:* ${checkoutItems[0].image}\n`;
-            }
-
             message += `\n*Total Amount:* ₹${totalAmount}\n`;
+            
+            // Add image link only at the end to trigger a clean preview
+            if (checkoutItems.length > 0 && checkoutItems[0].image) {
+                message += `\n*View Product:* ${checkoutItems[0].image}`;
+            }
 
             // Save order to Database for Persistence and Admin Panel
             const user = JSON.parse(localStorage.getItem('user'));
