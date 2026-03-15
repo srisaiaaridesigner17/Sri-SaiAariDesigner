@@ -315,6 +315,29 @@ app.post('/api/auth/reset-password', async (req, res) => {
     }
 });
 
+// Helper to delete from Cloudinary
+const deleteFromCloudinary = async (url) => {
+    if (!url || !url.includes('cloudinary.com')) return;
+    try {
+        // Extract public ID from URL
+        // Format: .../upload/v12345678/folder/public_id.jpg
+        const parts = url.split('/');
+        const uploadIndex = parts.indexOf('upload');
+        if (uploadIndex === -1) return;
+        
+        // Everything after vXXXXXXXX/ is the public ID + extension
+        const publicIdWithExt = parts.slice(uploadIndex + 2).join('/');
+        const publicId = publicIdWithExt.split('.')[0];
+        
+        const resourceType = url.includes('/video/upload/') ? 'video' : 'image';
+        
+        await cloudinary.uploader.destroy(publicId, { resource_type: resourceType });
+        console.log(`Successfully deleted ${resourceType} from Cloudinary: ${publicId}`);
+    } catch (err) {
+        console.error('Error deleting from Cloudinary:', err);
+    }
+};
+
 // --- Sliders ---
 app.get('/api/sliders', async (req, res) => {
     try {
@@ -340,6 +363,10 @@ app.post('/api/sliders', upload.single('image'), async (req, res) => {
 
 app.delete('/api/sliders/:id', async (req, res) => {
     try {
+        const slider = await Slider.findById(req.params.id);
+        if (slider && slider.image) {
+            await deleteFromCloudinary(slider.image);
+        }
         await Slider.findByIdAndDelete(req.params.id);
         res.json({ message: 'Slider deleted' });
     } catch (err) {
@@ -372,6 +399,10 @@ app.post('/api/courses', upload.single('image'), async (req, res) => {
 
 app.delete('/api/courses/:id', async (req, res) => {
     try {
+        const course = await Course.findById(req.params.id);
+        if (course && course.image) {
+            await deleteFromCloudinary(course.image);
+        }
         await Course.findByIdAndDelete(req.params.id);
         res.json({ message: 'Course deleted' });
     } catch (err) {
@@ -427,6 +458,14 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
 
         let imageUrls = product.images;
         if (req.files && req.files.length > 0) {
+            // Delete old images from Cloudinary if new ones are uploaded
+            if (product.images && product.images.length > 0) {
+                for (const oldImg of product.images) {
+                    await deleteFromCloudinary(oldImg);
+                }
+            } else if (product.image) {
+                await deleteFromCloudinary(product.image);
+            }
             imageUrls = req.files.map(file => file.path);
         }
 
@@ -446,6 +485,17 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
 // 4. Delete a product
 app.delete('/api/products/:id', async (req, res) => {
     try {
+        const product = await Product.findById(req.params.id);
+        if (product) {
+            // Delete all associated images/videos
+            if (product.images && product.images.length > 0) {
+                for (const imgUrl of product.images) {
+                    await deleteFromCloudinary(imgUrl);
+                }
+            } else if (product.image) {
+                await deleteFromCloudinary(product.image);
+            }
+        }
         await Product.findByIdAndDelete(req.params.id);
         res.json({ message: 'Product deleted' });
     } catch (err) {
