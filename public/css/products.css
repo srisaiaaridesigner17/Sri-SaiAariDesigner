@@ -76,6 +76,7 @@
     aspect-ratio: 1 / 1; /* Perfect Square */
     overflow: hidden;
     background-color: #f8f9fa;
+    flex-shrink: 0;
 }
 
 .product-img {

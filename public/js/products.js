@@ -519,7 +519,7 @@ function renderProductCards(products, containerId) {
                         <p class="service-desc">
                             ${product.description}
                         </p>
-                        <div class="product-rating" style="margin-bottom: 10px;">
+                        <div class="product-rating">
                             ${generateStars(Math.round(product.rating || 5))} 
                             <span style="font-weight: bold; margin-left: 5px; color: #333;">${parseFloat(product.rating || 5).toFixed(1)}</span>
                         </div>

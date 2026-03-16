@@ -440,6 +440,7 @@ header {
     aspect-ratio: 1 / 1; /* FIXED RATIO */
     overflow: hidden;
     background-color: #f8f9fa;
+    flex-shrink: 0; /* Prevent resizing */
 }
 
 .product-img {
@@ -473,7 +474,7 @@ header {
     font-size: 1.2rem;
     margin-bottom: 8px;
     font-family: 'Playfair Display', serif;
-    height: 2.6em; /* Fixed height for 2 lines */
+    height: 2.8em; /* Increased slightly for safety */
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -482,17 +483,18 @@ header {
 }
 
 .service-meta {
-    min-height: 2.8em; /* Account for wrapping duration */
+    height: 3.5em; /* Fixed height to accommodate 2 lines always */
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
     margin-bottom: 10px;
     font-size: 0.9rem;
     color: #666;
+    overflow: hidden;
 }
 
 .service-desc {
-    height: 3em; /* Fixed height for 2 lines */
+    height: 3.2em; /* Fixed height for 2 lines */
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -502,6 +504,16 @@ header {
     font-size: 0.85rem;
     color: #777;
     text-align: center;
+}
+
+.product-rating {
+    height: 1.5em;
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    color: #f5c518;
 }
 
 .product-price {
