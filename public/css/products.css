@@ -101,11 +101,13 @@
 }
 
 .product-title {
-    font-size: 1.15rem;
+    font-size: 1.1rem;
+    line-height: 1.4;
     font-family: 'Playfair Display', serif;
     margin-bottom: 8px;
     color: var(--text-dark);
-    height: 2.6em; /* Fixed height for 2 lines */
+    min-height: 2.8em; /* Exactly 2 lines */
+    max-height: 2.8em;
     overflow: hidden;
     display: -webkit-box;
     -webkit-line-clamp: 2;
@@ -113,12 +115,26 @@
     -webkit-box-orient: vertical;
 }
 
+.product-rating {
+    min-height: 1.5em;
+    margin-bottom: 10px;
+}
+
 .product-price {
     color: var(--primary-color);
     font-weight: 700;
     font-size: 1.1rem;
-    margin-top: auto; /* Push buttons to bottom */
     margin-bottom: 14px;
+}
+
+.card-actions {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-top: auto;
+    padding-top: 15px;
+    width: 100%;
 }
 
 /* Responsive */
