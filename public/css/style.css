@@ -419,13 +419,14 @@ header {
 
 .product-card {
     background: #fff;
-    border-radius: 8px;
+    border-radius: 12px;
     overflow: hidden;
     box-shadow: var(--shadow);
     transition: var(--transition);
     display: flex;
     flex-direction: column;
     height: 100%;
+    border: 1px solid #eee;
 }
 
 .product-card:hover {
@@ -436,7 +437,7 @@ header {
 .product-card > a {
     display: block;
     width: 100%;
-    aspect-ratio: 1 / 1; /* Perfect Square */
+    height: 300px; /* FIXED HEIGHT */
     overflow: hidden;
     background-color: #f8f9fa;
 }
@@ -444,7 +445,7 @@ header {
 .product-img {
     height: 100%;
     width: 100%;
-    object-fit: cover;
+    object-fit: cover; /* ENSURE FULL COVERAGE */
     object-position: center;
     transition: transform 0.5s ease;
     display: block;
@@ -557,15 +558,7 @@ header {
     color: var(--text-dark);
 }
 
-.product-card .product-img {
-    width: 100%;
-    height: 250px;
-    object-fit: contain;
-    background: #fdfdfd;
-    border-top-left-radius: 12px;
-    border-top-right-radius: 12px;
-    transition: transform 0.5s;
-}
+/* Consolidated with line 420 */
 
 .cart-item-img {
     width: 80px;
@@ -953,8 +946,12 @@ header {
         box-shadow: 0 4px 12px rgba(0,0,0,0.08);
     }
 
-    .product-card .product-img {
-        height: 160px !important; /* Smaller image height for 2-column layout */
+    .product-card > a {
+        height: 180px !important; /* Fixed height for 2-column mobile cards */
+    }
+
+    .product-img {
+        height: 100% !important;
         border-top-left-radius: 12px;
         border-top-right-radius: 12px;
     }
@@ -1325,4 +1322,42 @@ header {
 
 .main-product-area {
     flex: 1;
+}
+
+/* Course Cards - Ensuring uniform size */
+.course-card {
+    background: #fff;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border: 1px solid #eee;
+}
+
+.course-img {
+    width: 100%;
+    height: 220px; /* Fixed height for course images */
+    object-fit: cover;
+    display: block;
+}
+
+.course-content {
+    padding: 15px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.course-card:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 24px rgba(0,0,0,0.1);
+}
+
+@media (max-width: 768px) {
+    .course-img {
+        height: 160px; /* Fixed height for mobile course images */
+    }
 }
