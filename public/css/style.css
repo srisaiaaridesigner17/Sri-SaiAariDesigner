@@ -333,21 +333,33 @@ header {
     background: #fff;
     border-radius: 12px;
     box-shadow: var(--shadow);
+    height: 480px; /* STRICT FIXED HEIGHT FOR HOMEPAGE CARDS */
+}
+
+.product-scroll-container .product-title {
+    height: 2.6em !important;
+    min-height: 2.6em !important;
 }
 
 .product-scroll-container .service-meta {
-    display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-height: 4em;
+    height: 4.5em !important; /* Fixed height for 2-line wrapped durations */
+    min-height: 4.5em !important;
     gap: 4px;
     text-align: center;
+}
+
+.product-scroll-container .service-desc {
+    height: 2.8em !important;
+    min-height: 2.8em !important;
 }
 
 @media (max-width: 600px) {
     .product-scroll-container .product-card {
         flex: 0 0 200px !important;
+        height: 440px !important; /* Adjusted for mobile */
     }
 }
 
@@ -540,7 +552,7 @@ header {
     gap: 5px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-top: 10px; /* Minimal top margin instead of auto if not needed, but auto is fine if height is tight */
+    margin-top: auto; /* Push to bottom of fixed height card */
     padding-top: 10px;
 }
 
