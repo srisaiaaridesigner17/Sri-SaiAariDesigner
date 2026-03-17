@@ -184,7 +184,17 @@ async function loadAllOrders(statusFilter = 'All') {
                 <small style="color: #666;">${order.address || 'N/A'}</small>
             </td>
             <td style="font-size: 0.85rem;">
-                ${order.items ? order.items.map(i => `${i.name} (x${i.qty})`).join('<br>') : 'N/A'}
+                ${order.items ? order.items.map(i => `• ${i.name} (x${i.qty})`).join('<br>') : 'N/A'}
+                ${order.customization && (order.customization.fabric || order.customization.notes) ? `
+                    <div style="margin-top: 8px; padding-top: 5px; border-top: 1px dashed #eee; font-size: 0.8rem; color: #555;">
+                        <strong>Customizations:</strong><br>
+                        ${order.customization.fabric ? `Fabric: ${order.customization.fabric}<br>` : ''}
+                        ${order.customization.neck ? `Neck: ${order.customization.neck}<br>` : ''}
+                        ${order.customization.sleeve ? `Sleeve: ${order.customization.sleeve}<br>` : ''}
+                        ${order.customization.work ? `Work: ${order.customization.work}<br>` : ''}
+                        ${order.customization.notes ? `Notes: <em>${order.customization.notes}</em>` : ''}
+                    </div>
+                ` : ''}
             </td>
             <td><strong>₹ ${order.totalAmount || 0}</strong></td>
             <td>
