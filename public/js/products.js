@@ -524,9 +524,9 @@ function renderProductCards(products, containerId) {
                             <span style="font-weight: bold; margin-left: 5px; color: #333;">${parseFloat(product.rating || 5).toFixed(1)}</span>
                         </div>
                         <p class="product-price">₹ ${product.price}</p>
-                        <div class="card-actions">
-                            <button onclick="handleServiceBooking('${product.name.replace(/'/g, "\\'")}', '${product.price}', '${product.duration}', '', '${window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id}')" class="btn" style="flex: 1; background-color: #25d366; color: white;">
-                                <i class="fab fa-whatsapp"></i> Book Now
+                        <div class="card-actions" style="margin-top:auto;">
+                            <button onclick="handleServiceBooking('${product.name.replace(/'/g, "\\'")}', '${product.price}', '${product.duration}', '', '${window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id}')" class="btn" style="width: 100%; background-color: #25d366; color: white; padding: 10px 5px; font-size: 0.9rem; display: flex; align-items: center; justify-content: center; gap: 6px;">
+                                <i class="fab fa-whatsapp" style="font-size: 1.1rem;"></i> Book via WhatsApp
                             </button>
                         </div>
                     </div>
@@ -551,10 +551,12 @@ function renderProductCards(products, containerId) {
                     </div>
                     <p class="product-price">₹ ${product.price}</p>
                     ${isOutOfStock ? `<p style="color:#e54c4c; font-weight:bold; font-size:0.9rem; margin-bottom:5px;">Out of Stock</p>` : ''}
-                    <div class="card-actions">
-                        <button class="btn btn-outline" style="flex: 1;" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")}, 1, "")' ${isOutOfStock ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>Cart</button>
-                        <button class="btn" style="flex: 1; background-color: #ff9f00;" onclick='buyNow(${JSON.stringify(product).replace(/'/g, "&#39;")})' ${isOutOfStock ? 'disabled style="background-color:#ff9f00; opacity:0.5; cursor:not-allowed;"' : ''}>Buy</button>
-                        <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'm interested in:\n*Product:* ${product.name}\n*Price:* ₹${product.price}\n*Link:* ` + window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id)}" target="_blank" class="btn" style="background-color: #25d366; color: white; width: 45px;" title="Send to WhatsApp"><i class="fab fa-whatsapp"></i></a>
+                    <div class="card-actions" style="margin-top:auto; gap: 4px;">
+                        <button class="btn btn-outline" style="flex: 1; padding: 10px 4px; font-size: 0.85rem;" onclick='addToCart(${JSON.stringify(product).replace(/'/g, "&#39;")}, 1, "")' ${isOutOfStock ? 'disabled style="opacity:0.5; cursor:not-allowed;"' : ''}>Cart</button>
+                        <button class="btn" style="flex: 1; background-color: #ff9f00; padding: 10px 4px; font-size: 0.85rem;" onclick='buyNow(${JSON.stringify(product).replace(/'/g, "&#39;")})' ${isOutOfStock ? 'disabled style="background-color:#ff9f00; opacity:0.5; cursor:not-allowed;"' : ''}>Buy</button>
+                        <a href="https://wa.me/919688561269?text=${encodeURIComponent(`Hello, I'm interested in:\n*Product:* ${product.name}\n*Price:* ₹${product.price}\n*Link:* ` + window.location.origin + window.location.pathname.replace(/\/[^/]+$/, '') + '/product.html?id=' + product._id)}" target="_blank" class="btn" style="background-color: #25d366; color: white; padding: 10px 8px; flex: 1; font-size: 0.85rem; display: flex; align-items: center; justify-content: center; gap: 4px;" title="Send to WhatsApp">
+                            <i class="fab fa-whatsapp" style="font-size: 1rem;"></i> <span>WhatsApp</span>
+                        </a>
                     </div>
                 </div>
             </div>

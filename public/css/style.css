@@ -349,22 +349,22 @@ header {
     background: #fff;
     border-radius: 12px;
     box-shadow: var(--shadow);
-    height: 480px; /* STRICT FIXED HEIGHT FOR HOMEPAGE CARDS */
+    /* height: auto; Removed fixed 480px */
+    min-height: 400px;
 }
 
 .product-scroll-container .product-title {
-    height: 2.6em !important;
-    min-height: 2.6em !important;
+    height: 1.3em !important;
+    min-height: 1.3em !important;
 }
 
 .product-scroll-container .service-meta {
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    height: 4.5em !important; /* Fixed height for 2-line wrapped durations */
-    min-height: 4.5em !important;
-    gap: 4px;
-    text-align: center;
+    justify-content: space-between;
+    height: 1.5em !important; 
+    min-height: 1.5em !important;
+    gap: 10px;
 }
 
 .product-scroll-container .service-desc {
@@ -375,7 +375,7 @@ header {
 @media (max-width: 600px) {
     .product-scroll-container .product-card {
         flex: 0 0 200px !important;
-        height: 440px !important; /* Adjusted for mobile */
+        min-height: 380px !important;
     }
 }
 
@@ -504,12 +504,12 @@ header {
 }
 
 .product-info {
-    padding: 15px;
+    padding: 12px;
     text-align: center;
     display: flex;
     flex-direction: column;
     flex: 1;
-    min-height: 200px; /* Ensures consistent info area */
+    min-height: 140px; /* Reduced from 200 to eliminate huge white gaps */
 }
 
 .product-title {
