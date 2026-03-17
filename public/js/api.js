@@ -4,9 +4,19 @@
 
 if (typeof API_BASE_URL === 'undefined') {
     var API_BASE_URL = ''; // Same origin
-}
+}if (!window.api) {
+    const getAuthHeaders = (extraHeaders = {}) => {
+        const headers = { ...extraHeaders };
+        const userStr = localStorage.getItem('user');
+        if (userStr) {
+            const user = JSON.parse(userStr);
+            if (user && user.id && user.role === 'admin') {
+                headers['x-admin-id'] = user.id;
+            }
+        }
+        return headers;
+    };
 
-if (!window.api) {
     var api = {
     // --- Products ---
     getProducts: async (filters = {}) => {
@@ -24,6 +34,7 @@ if (!window.api) {
     addProduct: async (formData, signal) => {
         const res = await fetch(`${API_BASE_URL}/api/products`, {
             method: 'POST',
+            headers: getAuthHeaders(),
             body: formData,
             signal: signal
         });
@@ -33,6 +44,7 @@ if (!window.api) {
     updateProduct: async (id, formData, signal) => {
         const res = await fetch(`${API_BASE_URL}/api/products/${id}`, {
             method: 'PUT',
+            headers: getAuthHeaders(),
             body: formData,
             signal: signal
         });
@@ -41,14 +53,17 @@ if (!window.api) {
 
     deleteProduct: async (id) => {
         const res = await fetch(`${API_BASE_URL}/api/products/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return await res.json();
     },
 
     // --- Orders ---
     getOrders: async () => {
-        const res = await fetch(`${API_BASE_URL}/api/orders`);
+        const res = await fetch(`${API_BASE_URL}/api/orders`, {
+            headers: getAuthHeaders()
+        });
         return await res.json();
     },
 
@@ -78,7 +93,7 @@ if (!window.api) {
     updateOrderStatus: async (id, status) => {
         const res = await fetch(`${API_BASE_URL}/api/orders/${id}`, {
             method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
+            headers: getAuthHeaders({ 'Content-Type': 'application/json' }),
             body: JSON.stringify({ orderStatus: status })
         });
         return await res.json();
@@ -86,7 +101,8 @@ if (!window.api) {
 
     deleteOrder: async (id) => {
         const res = await fetch(`${API_BASE_URL}/api/orders/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return await res.json();
     },
@@ -100,6 +116,7 @@ if (!window.api) {
     addSlider: async (formData, signal) => {
         const res = await fetch(`${API_BASE_URL}/api/sliders`, {
             method: 'POST',
+            headers: getAuthHeaders(),
             body: formData,
             signal: signal
         });
@@ -108,7 +125,8 @@ if (!window.api) {
 
     deleteSlider: async (id) => {
         const res = await fetch(`${API_BASE_URL}/api/sliders/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return await res.json();
     },
@@ -122,6 +140,7 @@ if (!window.api) {
     addCourse: async (formData) => {
         const res = await fetch(`${API_BASE_URL}/api/courses`, {
             method: 'POST',
+            headers: getAuthHeaders(),
             body: formData
         });
         return await res.json();
@@ -129,7 +148,8 @@ if (!window.api) {
 
     deleteCourse: async (id) => {
         const res = await fetch(`${API_BASE_URL}/api/courses/${id}`, {
-            method: 'DELETE'
+            method: 'DELETE',
+            headers: getAuthHeaders()
         });
         return await res.json();
     },
@@ -137,6 +157,7 @@ if (!window.api) {
     updateCourse: async (id, formData) => {
         const res = await fetch(`${API_BASE_URL}/api/courses/${id}`, {
             method: 'PUT',
+            headers: getAuthHeaders(),
             body: formData
         });
         return await res.json();

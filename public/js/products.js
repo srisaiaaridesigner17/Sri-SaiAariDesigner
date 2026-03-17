@@ -486,11 +486,11 @@ function isMediaVideo(url) {
     return url.match(/\.(mp4|mov|avi|wmv)/i) || url.includes('/video/upload/');
 }
 
-function renderMediaTag(url, className, style = "") {
+function renderMediaTag(url, className, style = "", alt = "Product") {
     if (isMediaVideo(url)) {
         return `<video src="${url}" class="${className}" style="${style}" autoplay loop muted playsinline></video>`;
     }
-    return `<img src="${url}" class="${className}" style="${style}" alt="Product">`;
+    return `<img src="${url}" class="${className}" style="${style}" alt="${alt}">`;
 }
 
 function renderProductCards(products, containerId) {
@@ -506,7 +506,7 @@ function renderProductCards(products, containerId) {
             return `
                 <div class="product-card service-card">
                     <a href="product.html?id=${product._id}">
-                        ${renderMediaTag(product.image, "product-img")}
+                        ${renderMediaTag(product.image, "product-img", "", product.name)}
                     </a>
                     <div class="product-info">
                         <a href="product.html?id=${product._id}">
@@ -538,7 +538,7 @@ function renderProductCards(products, containerId) {
             <div class="product-card" style="position:relative;">
                 ${outOfStockBadge}
                 <a href="product.html?id=${product._id}" ${isOutOfStock ? 'style="opacity:0.6;"' : ''}>
-                    ${renderMediaTag(product.image, "product-img")}
+                    ${renderMediaTag(product.image, "product-img", "", product.name)}
                 </a>
                 <div class="product-info">
                     <a href="product.html?id=${product._id}">
@@ -677,7 +677,7 @@ async function loadProductDetail() {
                                                 ? `<div style="width:70px; height:70px; background:#000; display:flex; align-items:center; justify-content:center; border-radius:6px; color:white; border:2px solid transparent;" class="thumb-img ${idx===0 ? 'active-thumb' : ''}">
                                                      <i class="fas fa-video"></i>
                                                    </div>`
-                                                : `<img src="${img}" alt="Thumbnail" class="thumb-img ${idx===0 ? 'active-thumb' : ''}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">`
+                                                : `<img src="${img}" alt="${product.name} thumbnail" class="thumb-img ${idx===0 ? 'active-thumb' : ''}" style="width:70px; height:70px; object-fit:cover; border-radius:6px;">`
                                             }
                                         </div>`;
                             }).join('')}

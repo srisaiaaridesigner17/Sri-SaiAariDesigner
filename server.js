@@ -83,6 +83,24 @@ app.get('/api/health', (req, res) => {
     res.json({ status: status, db: mongoose.connection.name });
 });
 
+// --- Middleware: Admin Auth ---
+const isAdmin = async (req, res, next) => {
+    try {
+        const adminId = req.headers['x-admin-id'];
+        if (!adminId) {
+            return res.status(401).json({ message: 'Unauthorized: No Admin ID provided' });
+        }
+        const user = await User.findById(adminId);
+        if (user && user.role === 'admin') {
+            next();
+        } else {
+            res.status(403).json({ message: 'Forbidden: Admin access required' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: 'Server authorization error' });
+    }
+};
+
 // --- Auth / Users ---
 app.post('/api/auth/signup', async (req, res) => {
     try {
@@ -348,7 +366,7 @@ app.get('/api/sliders', async (req, res) => {
     }
 });
 
-app.post('/api/sliders', upload.single('image'), async (req, res) => {
+app.post('/api/sliders', isAdmin, upload.single('image'), async (req, res) => {
     try {
         const newSlider = new Slider({
             ...req.body,
@@ -361,7 +379,7 @@ app.post('/api/sliders', upload.single('image'), async (req, res) => {
     }
 });
 
-app.delete('/api/sliders/:id', async (req, res) => {
+app.delete('/api/sliders/:id', isAdmin, async (req, res) => {
     try {
         const slider = await Slider.findById(req.params.id);
         if (slider && slider.image) {
@@ -384,7 +402,7 @@ app.get('/api/courses', async (req, res) => {
     }
 });
 
-app.post('/api/courses', upload.single('image'), async (req, res) => {
+app.post('/api/courses', isAdmin, upload.single('image'), async (req, res) => {
     try {
         const newCourse = new Course({
             ...req.body,
@@ -397,7 +415,7 @@ app.post('/api/courses', upload.single('image'), async (req, res) => {
     }
 });
 
-app.delete('/api/courses/:id', async (req, res) => {
+app.delete('/api/courses/:id', isAdmin, async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
         if (course && course.image) {
@@ -410,7 +428,7 @@ app.delete('/api/courses/:id', async (req, res) => {
     }
 });
 
-app.put('/api/courses/:id', upload.single('image'), async (req, res) => {
+app.put('/api/courses/:id', isAdmin, upload.single('image'), async (req, res) => {
     try {
         const course = await Course.findById(req.params.id);
         if (!course) return res.status(404).json({ message: 'Course not found' });
@@ -457,7 +475,7 @@ app.get('/api/products/:id', async (req, res) => {
 });
 
 // 2. Add a new product
-app.post('/api/products', upload.array('images', 5), async (req, res) => {
+app.post('/api/products', isAdmin, upload.array('images', 5), async (req, res) => {
     try {
         const imageUrls = req.files ? req.files.map(file => file.path) : [];
 
@@ -477,7 +495,7 @@ app.post('/api/products', upload.array('images', 5), async (req, res) => {
 });
 
 // 3. Update a product
-app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
+app.put('/api/products/:id', isAdmin, upload.array('images', 5), async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (!product) return res.status(404).json({ message: 'Product not found' });
@@ -509,7 +527,7 @@ app.put('/api/products/:id', upload.array('images', 5), async (req, res) => {
 });
 
 // 4. Delete a product
-app.delete('/api/products/:id', async (req, res) => {
+app.delete('/api/products/:id', isAdmin, async (req, res) => {
     try {
         const product = await Product.findById(req.params.id);
         if (product) {
@@ -530,7 +548,7 @@ app.delete('/api/products/:id', async (req, res) => {
 });
 
 // 5. Get all orders
-app.get('/api/orders', async (req, res) => {
+app.get('/api/orders', isAdmin, async (req, res) => {
     try {
         const orders = await Order.find().sort({ createdAt: -1 });
         res.json(orders);
@@ -560,7 +578,7 @@ app.post('/api/orders', async (req, res) => {
 });
 
 // 7. Update order status
-app.patch('/api/orders/:id', async (req, res) => {
+app.patch('/api/orders/:id', isAdmin, async (req, res) => {
     try {
         const updatedOrder = await Order.findByIdAndUpdate(
             req.params.id,
@@ -574,7 +592,7 @@ app.patch('/api/orders/:id', async (req, res) => {
 });
 
 // 8. Delete an order
-app.delete('/api/orders/:id', async (req, res) => {
+app.delete('/api/orders/:id', isAdmin, async (req, res) => {
     try {
         await Order.findByIdAndDelete(req.params.id);
         res.json({ message: 'Order deleted' });
