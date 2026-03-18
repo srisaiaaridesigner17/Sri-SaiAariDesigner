@@ -251,9 +251,7 @@ header {
     display: flex;
     transition: transform 0.6s ease-in-out;
     width: 100%;
-    height: auto;
-    aspect-ratio: 16 / 9; /* Re-enabled the 16/9 ratio as requested */
-    max-height: 75vh; /* Safety limit to ensure it still fits vertical space on desktop */
+    height: 450px; /* Reduced further from 550px/16:9 for a more compact desktop layout */
     background: #fdfaf6;
 }
 
