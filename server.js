@@ -425,7 +425,8 @@ const deleteFromCloudinary = async (url) => {
 // --- Sliders ---
 app.get('/api/sliders', async (req, res) => {
     try {
-        const sliders = await Slider.find().sort({ createdAt: -1 });
+        // Only return necessary fields for the slider
+        const sliders = await Slider.find({}, 'image url').sort({ createdAt: -1 });
         res.json(sliders);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -461,7 +462,8 @@ app.delete('/api/sliders/:id', isAdmin, async (req, res) => {
 // --- Courses ---
 app.get('/api/courses', async (req, res) => {
     try {
-        const courses = await Course.find().sort({ createdAt: -1 });
+        // Project only needed fields for grid view
+        const courses = await Course.find({}, 'title description image duration price').sort({ createdAt: -1 });
         res.json(courses);
     } catch (err) {
         res.status(500).json({ message: err.message });
@@ -523,7 +525,12 @@ app.put('/api/courses/:id', isAdmin, upload.single('image'), async (req, res) =>
 // --- Products ---
 app.get('/api/products', async (req, res) => {
     try {
-        const products = await Product.find().sort({ createdAt: -1 });
+        const { type } = req.query;
+        let query = {};
+        if (type) query.type = type;
+        
+        // Return only what's needed for the product card to speed up the API
+        const products = await Product.find(query, 'name price image rating reviews type category stock duration').sort({ createdAt: -1 });
         res.json(products);
     } catch (err) {
         res.status(500).json({ message: err.message });

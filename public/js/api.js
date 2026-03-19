@@ -17,12 +17,32 @@ if (typeof API_BASE_URL === 'undefined') {
         return headers;
     };
 
+    // Cache to improve "perceived" speed
+    const CACHE = {
+        products: null,
+        lastFetch: 0
+    };
+    const CACHE_TIME = 2 * 60 * 1000; // 2 minutes
+
     var api = {
     // --- Products ---
     getProducts: async (filters = {}) => {
+        // Return from cache if recent (Simple optimization)
+        const now = Date.now();
+        if (CACHE.products && (now - CACHE.lastFetch < CACHE_TIME) && Object.keys(filters).length === 0) {
+            return CACHE.products;
+        }
+
         const params = new URLSearchParams(filters).toString();
         const res = await fetch(`${API_BASE_URL}/api/products${params ? '?' + params : ''}`);
-        return await res.json();
+        const data = await res.json();
+        
+        // Cache basic list (without filters)
+        if (Object.keys(filters).length === 0) {
+            CACHE.products = data;
+            CACHE.lastFetch = now;
+        }
+        return data;
     },
 
     getProductById: async (id) => {
