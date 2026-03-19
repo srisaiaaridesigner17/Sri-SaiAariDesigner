@@ -2,6 +2,10 @@
 // admin.js – API-based Admin Panel
 // =========================================
 
+let cropper;
+let currentCropImg = null;
+let croppedImagesMap = new Map(); // Store cropped blobs by original filename/index
+
 // ---- Auth Helpers ----
 
 function showSection(sectionId) {
@@ -239,30 +243,123 @@ async function deleteOrder(orderId) {
     }
 }
 
-// ---- Image Previews ----
+// ---- Image Previews & Cropping ----
+window.closeCropper = function() {
+    document.getElementById('cropper-modal').style.display = 'none';
+    if (cropper) {
+        cropper.destroy();
+        cropper = null;
+    }
+};
+
+window.openCropper = function(imgSrc, fileName, ratio = 1) {
+    const modal = document.getElementById('cropper-modal');
+    const image = document.getElementById('cropper-image');
+    image.src = imgSrc;
+    currentCropImg = { src: imgSrc, name: fileName, ratio: ratio };
+    
+    modal.style.display = 'flex';
+    
+    if (cropper) cropper.destroy();
+    
+    cropper = new Cropper(image, {
+        aspectRatio: ratio,
+        viewMode: 2,
+        autoCropArea: 1,
+    });
+};
+
+document.getElementById('crop-save-btn')?.addEventListener('click', () => {
+    if (!cropper) return;
+    
+    cropper.getCroppedCanvas().toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        croppedImagesMap.set(currentCropImg.name, blob);
+        
+        // Update the preview
+        const previews = document.querySelectorAll('.image-preview-wrapper img');
+        previews.forEach(img => {
+            if (img.getAttribute('data-name') === currentCropImg.name) {
+                img.src = url;
+            }
+        });
+        
+        // Also update course preview if it matches
+        const coursePreview = document.querySelector('#course-preview-container img');
+        if (coursePreview && coursePreview.getAttribute('data-name') === currentCropImg.name) {
+            coursePreview.src = url;
+        }
+
+        // Also update slider preview if it exists
+        const sliderStatus = document.getElementById('upload-status');
+        if (sliderStatus && currentCropImg.name.startsWith('slide-file')) {
+            sliderStatus.innerHTML = `<div class="image-preview-wrapper" style="margin: 10px 0;"><img src="${url}" style="max-height: 150px; border-radius: 8px;"><p style="color: green; margin-top: 5px;">Photo Cropped! Ready to upload.</p></div>`;
+        }
+
+        closeCropper();
+    }, 'image/jpeg');
+});
+
 document.addEventListener('change', (e) => {
-    if (e.target.id === 'image-file' || e.target.id === 'edit-image-file') {
+    if (e.target.id === 'image-file' || e.target.id === 'edit-image-file' || e.target.id === 'course-file' || e.target.id === 'slide-file') {
         const files = Array.from(e.target.files);
         if (files.length > 0) {
-            const prefix = e.target.id === 'image-file' ? '' : 'edit-';
-            const previewDiv = document.getElementById(`${prefix}image-preview`);
+            const isAddProduct = e.target.id === 'image-file';
+            const isEditProduct = e.target.id === 'edit-image-file';
+            const isCourse = e.target.id === 'course-file';
+            const isSlide = e.target.id === 'slide-file';
             
-            previewDiv.innerHTML = '';
-            for (let file of files) {
+            let previewDiv;
+            if (isAddProduct) previewDiv = document.getElementById('image-preview');
+            else if (isEditProduct) previewDiv = document.getElementById('edit-image-preview');
+            else if (isCourse) previewDiv = document.getElementById('course-preview-container');
+            else if (isSlide) previewDiv = document.getElementById('upload-status');
+            
+            if (previewDiv) previewDiv.innerHTML = '';
+
+            for (let i = 0; i < files.length; i++) {
+                const file = files[i];
+                const fileName = `${e.target.id}-${i}-${file.name}`; // Unique key
+                const fileUrl = URL.createObjectURL(file);
+                
+                const wrapper = document.createElement('div');
+                wrapper.className = 'image-preview-wrapper';
+                wrapper.style = "margin: 5px; display: inline-flex; flex-direction: column; align-items: center; background: #fff; padding: 10px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);";
+
                 let media;
                 if (file.type.startsWith('video/')) {
                     media = document.createElement('video');
-                    media.src = URL.createObjectURL(file);
+                    media.src = fileUrl;
                     media.controls = true;
-                    media.style = "max-width: 100%; height: 120px; border-radius: 4px; background: #000;";
+                    media.style = isCourse ? "width: 100%; height: 100%; object-fit: cover;" : "max-width: 100%; height: 120px; border-radius: 4px; background: #000;";
+                    wrapper.appendChild(media);
                 } else {
+                    const imgContainer = document.createElement('div');
+                    imgContainer.style = isCourse ? "width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: hidden;" : "width: 100px; height: 100px; display: flex; align-items: center; justify-content: center; overflow: hidden; border-radius: 4px; margin-bottom: 8px;";
+                    
                     media = document.createElement('img');
-                    media.src = URL.createObjectURL(file);
-                    media.style = "max-width: 100%; height: 100px; object-fit: contain; background: #f8f9fa; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);";
+                    media.src = fileUrl;
+                    media.setAttribute('data-name', fileName);
+                    media.style = "max-width: 100%; max-height: 100%; object-fit: contain;";
+                    imgContainer.appendChild(media);
+                    wrapper.appendChild(imgContainer);
+
+                    const editBtn = document.createElement('button');
+                    editBtn.type = 'button';
+                    editBtn.className = 'edit-image-btn';
+                    editBtn.innerHTML = '<i class="fas fa-edit"></i> Edit Photo';
+                    
+                    let ratio = 1;
+                    if (isSlide) ratio = 16/9;
+                    if (isCourse) ratio = 16/9;
+
+                    editBtn.onclick = () => openCropper(fileUrl, fileName, ratio);
+                    wrapper.appendChild(editBtn);
                 }
-                previewDiv.appendChild(media);
+                
+                if (previewDiv) previewDiv.appendChild(wrapper);
             }
-            previewDiv.style.display = 'flex';
+            if (previewDiv) previewDiv.style.display = 'flex';
         }
     }
 });
@@ -306,7 +403,13 @@ if (addProductForm) {
 
         const imageFiles = document.getElementById('image-file').files;
         for (let i = 0; i < imageFiles.length; i++) {
-            formData.append('images', imageFiles[i]);
+            const file = imageFiles[i];
+            const fileName = `image-file-${i}-${file.name}`;
+            if (croppedImagesMap.has(fileName)) {
+                formData.append('images', croppedImagesMap.get(fileName), file.name);
+            } else {
+                formData.append('images', file);
+            }
         }
 
         try {
@@ -314,6 +417,7 @@ if (addProductForm) {
             statusEl.innerText = '✅ Product added successfully!';
             statusEl.style.color = 'green';
             addProductForm.reset();
+            croppedImagesMap.clear();
             document.getElementById('image-preview').style.display = 'none';
             setTimeout(() => { if (statusEl.innerText.includes('successfully')) statusEl.innerText = ''; }, 3000);
         } catch (err) {
@@ -461,7 +565,13 @@ if (editForm) {
         const imageFiles = document.getElementById('edit-image-file').files;
         if (imageFiles.length > 0) {
             for (let i = 0; i < imageFiles.length; i++) {
-                formData.append('images', imageFiles[i]);
+                const file = imageFiles[i];
+                const fileName = `edit-image-file-${i}-${file.name}`;
+                if (croppedImagesMap.has(fileName)) {
+                    formData.append('images', croppedImagesMap.get(fileName), file.name);
+                } else {
+                    formData.append('images', file);
+                }
             }
         }
 
@@ -469,6 +579,7 @@ if (editForm) {
             await window.api.updateProduct(productId, formData);
             closeEditModal();
             loadManageProducts();
+            croppedImagesMap.clear();
             alert('Product updated successfully!');
         } catch (err) {
             console.error('Error updating product:', err);

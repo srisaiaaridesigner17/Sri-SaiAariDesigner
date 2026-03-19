@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/admin-dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <link rel="stylesheet" href="../css/cropper-custom.css">
     <link rel="icon" type="image/png" href="../images/sri-logo2.png">
     <style>
         .preview-box {
@@ -97,7 +99,25 @@
             </div>
         </main>
     </div>
+    
+    <!-- Cropping Modal -->
+    <div id="cropper-modal" class="cropper-modal-overlay">
+        <div class="cropper-modal-container">
+            <div class="cropper-modal-header">
+                <h3><i class="fas fa-crop-alt"></i> Crop Image</h3>
+                <button type="button" onclick="closeCropper()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888;">&times;</button>
+            </div>
+            <div class="cropper-modal-body">
+                <img id="cropper-image" src="" style="max-width: 100%; display: block;">
+            </div>
+            <div class="cropper-modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeCropper()" style="background: #888; color: white; border-color: #888;">Cancel</button>
+                <button type="button" class="btn" id="crop-save-btn">Crop & Save</button>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/admin.js"></script>
     <script>
@@ -107,13 +127,6 @@
             checkAuth();
             loadCourses();
 
-            const fileInput = document.getElementById('course-file');
-            fileInput.addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                if (!file) return;
-                const preview = document.getElementById('course-preview-container');
-                preview.innerHTML = `<img src="${URL.createObjectURL(file)}">`;
-            });
 
             document.getElementById('course-form').addEventListener('submit', async (e) => {
                 e.preventDefault();
@@ -128,7 +141,14 @@
                 formData.append('duration', document.getElementById('course-duration-input').value);
                 
                 const file = document.getElementById('course-file').files[0];
-                if (file) formData.append('image', file);
+                if (file) {
+                    const fileName = `course-file-0-${file.name}`;
+                    if (croppedImagesMap.has(fileName)) {
+                        formData.append('image', croppedImagesMap.get(fileName), file.name);
+                    } else {
+                        formData.append('image', file);
+                    }
+                }
 
                 try {
                     if (isEdit) {
@@ -139,6 +159,7 @@
                         status.innerHTML = '<p style="color: green;">✅ Course added successfully!</p>';
                     }
                     resetForm();
+                    croppedImagesMap.clear();
                     loadCourses();
                     setTimeout(() => status.innerHTML = '', 3000);
                 } catch (err) {

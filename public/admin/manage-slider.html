@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="../css/style.css">
     <link rel="stylesheet" href="../css/admin-dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css">
+    <link rel="stylesheet" href="../css/cropper-custom.css">
     <link rel="icon" type="image/png" href="../images/sri-logo2.png">
     <style>
         .slide-item {
@@ -88,7 +90,25 @@
             </div>
         </main>
     </div>
+    
+    <!-- Cropping Modal -->
+    <div id="cropper-modal" class="cropper-modal-overlay">
+        <div class="cropper-modal-container">
+            <div class="cropper-modal-header">
+                <h3><i class="fas fa-crop-alt"></i> Crop Image</h3>
+                <button type="button" onclick="closeCropper()" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #888;">&times;</button>
+            </div>
+            <div class="cropper-modal-body">
+                <img id="cropper-image" src="" style="max-width: 100%; display: block;">
+            </div>
+            <div class="cropper-modal-footer">
+                <button type="button" class="btn btn-outline" onclick="closeCropper()" style="background: #888; color: white; border-color: #888;">Cancel</button>
+                <button type="button" class="btn" id="crop-save-btn">Crop & Save</button>
+            </div>
+        </div>
+    </div>
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.js"></script>
     <script src="../js/api.js"></script>
     <script src="../js/admin.js"></script>
     <script>
@@ -108,31 +128,47 @@
                 }
             };
 
-            document.getElementById('slide-file').addEventListener('change', async (e) => {
+            const fileInput = document.getElementById('slide-file');
+            fileInput.addEventListener('change', async (e) => {
                 const file = e.target.files[0];
                 if (!file) return;
 
                 const status = document.getElementById('upload-status');
-                status.innerHTML = `<p style="color: blue;">⏳ Uploading to Cloudinary... <button type="button" onclick="cancelSliderUpload()" style="margin-left:10px; padding:2px 8px; font-size:0.8rem; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">Stop</button></p>`;
-
-                currentSliderController = new AbortController();
-                const formData = new FormData();
-                formData.append('image', file);
+                // The actual upload is now triggered by a separate button or automatically? 
+                // In manage-slider.html it was automatic on change. 
+                // I should add an "Upload" button or keep it automatic but wait for potential cropping.
+                // Let's add an "Upload" button to be safe and clear.
+                status.innerHTML += `<button type="button" id="start-upload-btn" class="btn" style="margin-top:10px; width:100%;">Upload This Photo</button>`;
                 
-                try {
-                    await window.api.addSlider(formData, currentSliderController.signal);
-                    status.innerHTML = '<p style="color: green;">✅ Slide added successfully!</p>';
-                    loadHeroSlides();
-                    setTimeout(() => status.innerHTML = '', 3000);
-                } catch (err) {
-                    if (err.name === 'AbortError') {
-                        console.log('Slider upload aborted');
+                document.getElementById('start-upload-btn').onclick = async () => {
+                    status.innerHTML = `<p style="color: blue;">⏳ Uploading to Cloudinary... <button type="button" onclick="cancelSliderUpload()" style="margin-left:10px; padding:2px 8px; font-size:0.8rem; background:#f44336; color:white; border:none; border-radius:4px; cursor:pointer;">Stop</button></p>`;
+
+                    currentSliderController = new AbortController();
+                    const formData = new FormData();
+                    
+                    const fileName = `slide-file-0-${file.name}`;
+                    if (croppedImagesMap.has(fileName)) {
+                        formData.append('image', croppedImagesMap.get(fileName), file.name);
                     } else {
-                        status.innerHTML = '<p style="color: red;">❌ Failed to upload: ' + err.message + '</p>';
+                        formData.append('image', file);
                     }
-                } finally {
-                    currentSliderController = null;
-                }
+                    
+                    try {
+                        await window.api.addSlider(formData, currentSliderController.signal);
+                        status.innerHTML = '<p style="color: green;">✅ Slide added successfully!</p>';
+                        croppedImagesMap.clear();
+                        loadHeroSlides();
+                        setTimeout(() => status.innerHTML = '', 3000);
+                    } catch (err) {
+                        if (err.name === 'AbortError') {
+                            console.log('Slider upload aborted');
+                        } else {
+                            status.innerHTML = '<p style="color: red;">❌ Failed to upload: ' + err.message + '</p>';
+                        }
+                    } finally {
+                        currentSliderController = null;
+                    }
+                };
             });
         });
 
