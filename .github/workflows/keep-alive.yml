@@ -12,7 +12,7 @@ jobs:
     steps:
       - name: Send Stay-Awake Request
         run: |
-          URL="https://srisaifashion.shop" 
+          URL="https://www.srisaifashion.shop" 
           if [ -n "${{ secrets.RENDER_URL }}" ]; then
             URL="${{ secrets.RENDER_URL }}"
           fi
