@@ -716,6 +716,9 @@ async function loadProductDetail() {
                         "url": pageUrl,
                         "priceCurrency": "INR",
                         "price": product.price,
+                        "priceValidUntil": "2026-12-31",
+                        "sku": product._id,
+                        "itemCondition": "https://schema.org/NewCondition",
                         "availability": product.stock > 0 || isBeautyParlour ? "https://schema.org/InStock" : "https://schema.org/OutOfStock"
                     },
                     "aggregateRating": {
