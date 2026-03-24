@@ -32,15 +32,19 @@ app.get('/api/ping', (req, res) => {
 });
 
 // Middleware
-// Enforce HTTPS and non-WWW
+// Enforce HTTPS only (do NOT redirect www → non-www, since www is the primary domain on Render)
 app.use((req, res, next) => {
     const host = req.headers.host || '';
-    const isWww = host.startsWith('www.');
+
+    // Skip enforcement for local development
+    if (host.includes('localhost') || host.includes('127.0.0.1')) {
+        return next();
+    }
+
     const isHttps = req.headers['x-forwarded-proto'] === 'https';
 
-    if (isWww || !isHttps) {
-        const newHost = isWww ? host.slice(4) : host;
-        return res.redirect(301, 'https://' + newHost + req.url);
+    if (!isHttps) {
+        return res.redirect(301, 'https://' + host + req.url);
     }
     next();
 });
